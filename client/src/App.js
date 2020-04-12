@@ -1554,9 +1554,9 @@ class ProductSearchAutomation extends React.Component{
     //     <MenuItem key="13"><div onClick = {() => this.dropdownCall('PS4 Games')}>PS4 Games</div></MenuItem>
     //   </Menu>
     // );
-    if (isMobile){
-      return(<div className = "errorBody"><div className = "isMobile"><h5 className= "errorHead">MOBILE VERSION COMING SOON...</h5><br/>Switch to <span className = "desktopMode">Desktop Mode<span className = "emoji" role="img" aria-labelledby = "jsx-a11y/accessible-emoji">&#128161;</span></span><br/></div><span className = "faDesktop"><FaDesktop /></span></div>)
-    }else{
+    // if (isMobile){
+    //   return(<div className = "errorBody"><div className = "isMobile"><h5 className= "errorHead">MOBILE VERSION COMING SOON...</h5><br/>Switch to <span className = "desktopMode">Desktop Mode<span className = "emoji" role="img" aria-labelledby = "jsx-a11y/accessible-emoji">&#128161;</span></span><br/></div><span className = "faDesktop"><FaDesktop /></span></div>)
+    // }else{
     return(
         <div id = "App" className="App">
 
@@ -1594,7 +1594,7 @@ class ProductSearchAutomation extends React.Component{
               <div className = "downNav-inner2">
                 <div className = "downNavDropdown drop1">
                   <span className = "dropHead">
-                    Electronics
+                    electronics
                     <i className="down"></i>
                   </span>
                   <div className="dropOut drop2Out" id = "dropOut1">
@@ -1688,7 +1688,7 @@ class ProductSearchAutomation extends React.Component{
 
                 <div className = "downNavDropdown drop2">
                   <span className = "dropHead">
-                    TVs & Appliances
+                    tvs & appliances
                     <i className="down"></i>
                   </span>
                   <div className="dropOut drop2Out">
@@ -1749,7 +1749,7 @@ class ProductSearchAutomation extends React.Component{
 
                 <div className = "downNavDropdown drop3">
                   <span className = "dropHead">
-                    Men
+                    men
                     <i className="down"></i>
                   </span>
                   <div className="dropOut drop2Out">
@@ -1810,7 +1810,7 @@ class ProductSearchAutomation extends React.Component{
 
                 <div className = "downNavDropdown drop4">
                   <span className = "dropHead">
-                    Women
+                    women
                     <i className="down"></i>
                   </span>
                   <div className="dropOut drop2Out">
@@ -1869,70 +1869,10 @@ class ProductSearchAutomation extends React.Component{
                   </div>
                 </div>
 
-                <div className = "downNavDropdown drop5">
-                  <span className = "dropHead">
-                    TVs & Appliances
-                    <i className="down"></i>
-                  </span>
-                  <div className="dropOut drop2Out">
-                    <div className="dropIn drop2In">
-                      <div className="dropInBatch">
-                        <div className="dropItemHead" onClick = {() => this.handleDropdownClick('Laptops')}><div>Dell</div></div>
-                        <div className="dropItem"><div>Lenovo</div></div>
-                        <div className="dropItem"><div>Mac</div></div>
-                        <div className="dropItem"><div>Surface</div></div>
-                        <div className="dropItem"><div>Asus</div></div>
-                        <div className="dropItem"><div>HP</div></div>
-                        <div className="dropItem"><div>Acer</div></div>
-                        <div className="dropItem"><div>Gaming</div></div>
-                      </div>
-                      <div className="dropInBatch dropInColorDark">
-                        <div className="dropItem"><div>Dell</div></div>
-                        <div className="dropItem"><div>Lenovo</div></div>
-                        <div className="dropItem"><div>Mac</div></div>
-                        <div className="dropItem"><div>Surface</div></div>
-                        <div className="dropItem"><div>Asus</div></div>
-                        <div className="dropItem"><div>HP</div></div>
-                        <div className="dropItem"><div>Acer</div></div>
-                        <div className="dropItem"><div>Gaming</div></div>
-                      </div>
-                      <div className="dropInBatch">
-                        <div className="dropItem"><div>Dell</div></div>
-                        <div className="dropItem"><div>Lenovo</div></div>
-                        <div className="dropItem"><div>Mac</div></div>
-                        <div className="dropItem"><div>Surface</div></div>
-                        <div className="dropItem"><div>Asus</div></div>
-                        <div className="dropItem"><div>HP</div></div>
-                        <div className="dropItem"><div>Acer</div></div>
-                        <div className="dropItem"><div>Gaming</div></div>
-                      </div>
-                      <div className="dropInBatch dropInColorDark">
-                        <div className="dropItem"><div>Dell</div></div>
-                        <div className="dropItem"><div>Lenovo</div></div>
-                        <div className="dropItem"><div>Mac</div></div>
-                        <div className="dropItem"><div>Surface</div></div>
-                        <div className="dropItem"><div>Asus</div></div>
-                        <div className="dropItem"><div>HP</div></div>
-                        <div className="dropItem"><div>Acer</div></div>
-                        <div className="dropItem"><div>Gaming</div></div>
-                      </div>
-                      <div className="dropInBatch">
-                        <div className="dropItem"><div>Dell</div></div>
-                        <div className="dropItem"><div>Lenovo</div></div>
-                        <div className="dropItem"><div>Mac</div></div>
-                        <div className="dropItem"><div>Surface</div></div>
-                        <div className="dropItem"><div>Asus</div></div>
-                        <div className="dropItem"><div>HP</div></div>
-                        <div className="dropItem"><div>Acer</div></div>
-                        <div className="dropItem"><div>Gaming</div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
                 <div className = "downNavDropdown drop6">
                   <span className = "dropHead">
-                    Baby & Kids
+                    baby & kids
                     <i className="down"></i>
                   </span>
                   <div className="dropOut drop2Out">
@@ -1993,7 +1933,7 @@ class ProductSearchAutomation extends React.Component{
 
                 <div className = "downNavDropdown drop7">
                   <span className = "dropHead">
-                    Home & Furniture
+                    home & furniture
                     <i className="down"></i>
                   </span>
                   <div className="dropOut drop2Out">
@@ -2054,7 +1994,7 @@ class ProductSearchAutomation extends React.Component{
 
                 <div className = "downNavDropdown drop8">
                   <span className = "dropHead">
-                    Sports, Books & More
+                    sports, books & more
                     <i className="down"></i>
                   </span>
                   <div className="dropOut drop2Out">
@@ -2312,7 +2252,7 @@ class ProductSearchAutomation extends React.Component{
 
 
     )}
-  }
+  // }
 }
 
 //Exporting the main default class
