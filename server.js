@@ -69,7 +69,7 @@ mongoose.connection.on('disconnected', function () {
 
 
 
-app.post('/searchTermSuggestions', async(req, res) => {
+app.post('/searchTermSuggestions', (req, res) => {
   searchTerm = new RegExp(req.body.searchTerm);
 
   searchTermDoc.find({ searchTerm: searchTerm }).sort({frequency:-1}).limit(10).then((resu)=>{
@@ -80,6 +80,17 @@ app.post('/searchTermSuggestions', async(req, res) => {
       console.log(er);
     })
 
+});
+
+app.post('/getVisitCount', (req, res) => {
+
+  visitDoc.find({ inde : 1 }).then(resuu => {
+    res.send(resuu);
+    console.log(resuu);
+  }).catch(errr => {
+    res.send('Retrieving...');
+    console.log(errr);
+  });
 
 });
 
@@ -225,7 +236,7 @@ app.post('/initialFireup', async(req, res) => {
 
 
     }).catch(er => {
-      res.send([]);
+      res.send([undefined,undefined,undefined,undefined,undefined]);
       console.log(er);
     })
 });
@@ -295,7 +306,7 @@ function fetchAmazon(html){
             ratingCount : ratingCount
         });
     });
-    console.log(data);
+    // console.log(data);
     console.log("Data from amazon fetched");
     return true;
   }
@@ -347,20 +358,23 @@ function deepFlipkart(html){
         img.push(imgTemp);
       }
     });
-  // console.log(img);
-  // first().attr('style');
-  if(img.length === 0){
-    let imgTem = $('img._1Nyybr').first().attr('src');
-    if(imgTem !== undefined){
-      img.push();
-    }
-    // else{
-    //   img.push(noImg);
-    // }
+
+  // if(img[0] === undefined){
+  //   console.log($('#jsonLD').data);
+  //   let imgTem = $('img._1Nyybr').first().attr('src');
+  //   console.log('IN', imgTem);
+  //   if(imgTem !== undefined){
+  //     img.push();
+  //   }
+  // }
+
+  let imt = '';
+  if(img[0] !== undefined){
+    imt = img[0].replace(/\/128/g, '/416');
   }
 
   let name = $('div._3aS5mM p').first().text();
-  return [rating, img[0].replace(/\/128/g, '/416'), ratingCount, name, price, brand, img];
+  return [rating, imt, ratingCount, name, price, brand, img];
 }
 
 function fetchFlipkart(html){
@@ -432,7 +446,7 @@ function fetchFlipkart(html){
                       console.log("Error : ",err);
                   }));
         });
-    console.log(data);
+    // console.log(data);
     console.log("Data from flipkart fetched");
     return  Promise.all(promises).then(() => true).catch(() => false);
   }
@@ -448,10 +462,10 @@ function fetchSnapDeal(html){
     $('div.product-tuple-listing').each((i, elem) => {
       let link = $(elem).find('a.dp-widget-link').first().attr('href');
       let imageSrc = $(elem).find('picture.picture-elem source').attr('srcset');
-      console.log(imageSrc);
+      // console.log(imageSrc);
       if(imageSrc === undefined || imageSrc === ''){
         imageSrc = $(elem).find('picture.picture-elem img').attr('src');
-        console.log('undefined so ', imageSrc)
+        // console.log('undefined so ', imageSrc)
       }
       let name = $(elem).find('p.product-title').text();
 
@@ -488,7 +502,7 @@ function fetchSnapDeal(html){
 
     });
 
-    console.log(data);
+    // console.log(data);
     console.log("Data from Snapdeal fetched");
     return true;
   }
@@ -501,7 +515,14 @@ function fetchSnapDeal(html){
 
 
 
-app.post('/searchTermsUpdate', async(req, res) => {
+app.post('/getSearchResults', async(req, res) => {
+  // let timer = 0;
+  // setInterval(function () {
+  //   timer += 1;
+  //   if(timer > 10){
+  //     res.send([data,expandedData,category]);
+  //   }
+  // }, 1000);
   searchTerm = req.body.searchTerm;
   data = [];
   expandedData = [];
@@ -566,9 +587,9 @@ app.post('/searchTermsUpdate', async(req, res) => {
   }
 
   if(await flipkartReturn === true && await amazonReturn === true && await snapdealReturn === true){
-    console.log(flipkartReturn, amazonReturn, snapdealReturn);
-    console.log([data,expandedData,category]);
-    res.send([data,expandedData,category]);
+    // console.log(flipkartReturn, amazonReturn, snapdealReturn);
+    // console.log([data,expandedData,category]);
+      res.send([data,expandedData,category]);
 
   }
 

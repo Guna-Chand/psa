@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Audiowide|Exo|Ubuntu|Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Audiowide|Exo|Ubuntu|Russo+One|Rubik&display=swap');
 /* @import url('https://fonts.googleapis.com/css?family=Russo+One&display=swap'); */
 
 html,body{
@@ -102,11 +102,14 @@ html,body{
 
 .no-ads{
   height: 200px;
-  /* background-color: silver; */
-  /* background: linear-gradient(50deg, #2d2d2d 9%, black 100%); */
-  background: #0F2027;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* background: #141E30;
+  background: -webkit-linear-gradient(to right, #243B55, #141E30);
+  background: linear-gradient(to right, #243B55, #141E30);*/
+
+  background: #000000;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 
   color: silver;
   font-weight: bold;
@@ -120,9 +123,66 @@ html,body{
 
 .ad-span{
   font-variant: small-caps;
-  /* font-stretch: extra-expanded; */
-  /* margin-top: 45%; */
 }
+
+.staticStartPage{
+  height: 500px;
+  width: 100%;
+  background-color: black;
+
+  background: #000000;
+  background: -webkit-linear-gradient(to right, #434343, #000000);
+  background: linear-gradient(to right, #434343, #000000);
+
+  margin: auto;
+  margin-top: 5px;
+  padding: 30px;
+}
+
+.staticPageBackground{
+  height: 100%;
+  background-image: url('./addImg.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+  /* background-blend-mode: color-burn; */
+}
+
+.staticPageBackgroundOpacity{
+  height: 100%;
+  width: 100%;
+  /* background-color: rgba(0,0,0,0.1); */
+  background: linear-gradient(to right, rgba(67, 67, 67, 0.3), rgba(0,0,0,0.3));
+}
+
+.staticStartPageText{
+  height: 100%;
+  padding: 7% 0;
+  padding-left: 4%;
+  text-align: left;
+  font-family: "Rubik",sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+.staticStartPageTextTop{
+  font-weight: 700;
+  font-size: 3.76471rem;
+  line-height: 1.2;
+  width: 100%;
+  vertical-align: middle;
+}
+
+.staticStartPageTextBottom{
+  width: 40%;
+  font-size: 1rem;
+}
+
+/* .staticStartPageImage{
+  height: 400px
+} */
+
 
 .top5Div{
   /* position: inherit; */
@@ -195,7 +255,8 @@ html,body{
 
 .topFiveImgTitle{
   margin-top: 15px;
-  text-transform: capitalize;
+  font-variant: small-caps;
+  /* text-transform: capitalize; */
 }
 
 .top5Heading{
@@ -220,26 +281,26 @@ input::-webkit-calendar-picker-indicator {
 } */
 
 .head{
-  /* overflow: hidden; */
   width: 100%;
   text-align: center;
-  /* position: fixed; */
+  /* margin-top: 100px; */
   display: none;
-  /* z-index: 10; */
+  z-index: 0;
+}
+/* .head{
+  width: 100%;
+  text-align: center;
+  display: none;
   user-select: none;
   cursor: default;
   letter-spacing: 1px;
   transition: color 0.5s ease-out;
-  /* margin-top: 7cm; */
   top: 40%;
-  /* left: 1%; */
-  /* right: 1%; */
   font-size: 200%;
   font-family: 'Audiowide', cursive;
   z-index: 0;
   color: #f1f3f6;
-  /* text-shadow: 0 0 5px rgba(20,20,20,0.5); */
-}
+} */
 
 .timeCounter{
   /* font-family: 'Roboto'!important; */
@@ -286,14 +347,15 @@ input::-webkit-calendar-picker-indicator {
   display: none;
 }
 .jettext {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   margin-top: 10px;
+  margin-bottom: 30px;
   text-align: center;
-  top: 110px;
-  /* position: fixed; */
+  /* top: 20px; */
+  /* font-family: 'Roboto',sans-serif; */
   font-weight: 600;
   font-size: 13px;
-  text-transform: uppercase;
+  font-variant: small-caps;
   user-select: none;
   cursor: default;
   letter-spacing: 2px;
@@ -301,7 +363,7 @@ input::-webkit-calendar-picker-indicator {
 }
 .jettext2{
   font-family: 'Roboto';
-  margin: 0 auto;
+  /* margin: 0 auto; */
   margin-top: 10px;
   text-align: center;
   /* top: 210px; */
@@ -579,54 +641,133 @@ h4{
 
 
 .visibleAbout{
-  /* margin-top: 1000px; */
-  user-select: none;
-  font-family: 'Exo', sans-serif;
-  font-size: 16px;
-  top: 0;
+  right: 0;
+
   height: 0;
-  width: 100%;
-  min-width: 1000px;
+  font-family: 'Rubik', sans-serif;
+  /* min-width: 1000px; */
+  /* border-radius: 50%; */
   position: fixed;
-  overflow: scroll;
   z-index: 3;
-  background-color: #ffffff;
-  color: #000000;
-  overflow-y: hidden;
-  transition: 0.5s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    left: 0;
-}
-
-.visibleAbout p{
-  color: grey;
-  /* padding-left: 5%;
-  padding-right: 5%; */
-}
-
-
-.aboutDiv{
+  background: #000000;
+  background: -webkit-linear-gradient(to right, #434343, #000000);
+  background: linear-gradient(to right, #434343, #000000);
+  overflow: hidden;
+  overflow-y: scroll;
+  /* overflow-x: scroll; */
+  /* transition: height 1s; */
   text-align: left;
+  /* box-shadow: 0px 1px 100px 100px rgba(0,0,0,1); */
 }
+
+.visibleAbout::-webkit-scrollbar{
+  display: none!important;
+}
+
+.aboutBackground{
+  margin-top: 100px;
+  background-image: url('./addImg1.png');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: contain;
+  height: 400px;
+  margin-right: 5%;
+  margin-bottom: 150px;
+}
+
+.aboutText{
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, rgba(67, 67, 67, 0.3), rgba(0,0,0,0.3));
+  padding-top: 70px;
+  /* padding-left: 100px; */
+}
+
+.aboutTextHead{
+  font-size: 50px;
+  font-weight: 700;
+  padding-left: 100px;
+}
+
+.aboutTextContent{
+  line-height: 1.7;
+  font-size: 18px;
+  padding-left: 100px;
+}
+
+.aboutTextContentTop{
+  width: 64%;
+}
+
+.aboutTextContentTop2{
+  margin: 20px 0;
+  background: #2C3E50;
+  background: -webkit-linear-gradient(to right, #4CA1AF, #2C3E50);
+  background: linear-gradient(to right, #4CA1AF, #2C3E50);
+
+
+
+  /* font-weight: bolder; */
+  /* color: black; */
+  padding: 10px;
+  border-radius: 3px;
+}
+
+/* .aboutTextContentBottom{
+  width: 70%;
+} */
+
+.aboutArrowIcon{
+  margin-bottom: 2px;
+  color: silver;
+  /* font-weight: bolder; */
+}
+
+.aboutTotalVisits{
+  /* float: left; */
+  max-width: 200px;
+  bottom: 0;
+}
+
+.aboutTotalVisitsContent{
+  bottom: 0;
+  font-size: 18px;
+  padding: 5px;
+  text-align: center;
+  background: #2C3E50;
+  background: -webkit-linear-gradient(to right, #4CA1AF, #2C3E50);
+  background: linear-gradient(to right, rgba(76, 161, 175, 0.3), rgba(44, 62, 80, 0.3));
+  font-variant: small-caps;
+}
+
+.totalPageVisits{
+  /* font-weight: bold; */
+  font-size: 14px;
+}
+
+.aboutCloseButtonContainer{
+  position: relative;
+  width: 100%!important;
+  /* text-align: center; */
+  /* align-items: center; */
+}
+
 
 .aboutCloseButton{
+  position: relative;
   text-shadow: 3px 3px 2px rgba(20,20,20,0.2);
   cursor: pointer;
   color: rgba(128,128,128,0.6);
   font-size: 45px;
   transition: 0.5s;
-  width: 5%;
+  margin-top: 100px;
+  margin-left: 49%;
+  width: 50px;
 }
 
 .aboutCloseButton:hover{
-  color: black;
-  font-size: 50px;
+  color: silver;
+  font-size: 46px;
 }
 
 .modalSection{
@@ -670,6 +811,13 @@ h4{
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+.modalItemContentZoomCaution{
+  padding-top: 20px;
+  font-size: 10px;
+  color: red;
+
 }
 
 .modalItemContent::-webkit-scrollbar{
@@ -754,6 +902,10 @@ h4{
 .largeImagehelper {
   display: inline-block;
   height: 100%;
+  vertical-align: middle;
+}
+.resultImagehelper {
+  display: inline-block;
   vertical-align: middle;
 }
 
@@ -915,7 +1067,7 @@ h4{
     /* align-items: center; */
     /* overflow: scroll; */
     width: 100%;
-    min-height: 700px;
+    min-height: 200px;
     /* margin-top: 7px; */
     /* min-width: 1000px; */
     left: 0;
@@ -2004,9 +2156,10 @@ background: linear-gradient(to right, #414345, #232526); */
   color: gray;
 }
 
-/* .resultModal{
+.modalBody{
+  overflow-x: hidden!important;
 }
-
+/*
 .modal-lg{
 
 }
