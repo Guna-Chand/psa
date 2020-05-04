@@ -208,7 +208,7 @@ class ProductSearchAutomation extends React.Component{
     console.log('Getting the total page visits');
     axios.post('/getVisitCount')
     .then( res => {
-      console.log(res.data);
+      // console.log(res.data);
       if(res.data !== 'Retrieving...'){
         document.getElementById('totalPageVisits').innerHTML = res.data[0].totalVisits;
       }else{
@@ -221,7 +221,7 @@ class ProductSearchAutomation extends React.Component{
     console.log('Getting the html to load first page content');
     axios.post('/getFirstPage')
     .then( res => {
-      console.log(res.data);
+      // console.log(res.data);
       this.fetchStartPageContent(res.data);
     }).catch( err => {
       console.error(err);
@@ -229,12 +229,12 @@ class ProductSearchAutomation extends React.Component{
 
     axios.post('/initialFireup')
     .then( res => {
-      console.log(res.data);
+      // console.log(res.data);
       globalTopFive = res.data[0];
       // globalTopFive = globalTopFive[0];
       this.setSearchSuggestions(globalTopFive);
       this.fetchTopFive(res.data[0], res.data[1]);
-      console.log(res.data[0], res.data[1]);
+      // console.log(res.data[0], res.data[1]);
     }).catch( err => {
       console.error(err);
     });
@@ -264,7 +264,7 @@ class ProductSearchAutomation extends React.Component{
       }else{
         axios.post('/searchTermSuggestions', { searchTerm: this.state.searchTerm.toLowerCase()})
         .then( res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.setSearchSuggestions(res.data);
         }).catch( err => {
           console.error(err);
@@ -404,7 +404,7 @@ class ProductSearchAutomation extends React.Component{
 
 
       $(".col-item-inner").map((index, ele) => {
-        console.log(dataLocal[index].searchTerm, ele);
+        // console.log(dataLocal[index].searchTerm, ele);
         $(ele).bind( "click",() => this.dropdownCall(dataLocal[index].searchTerm));
         return 1;
       });
@@ -1273,6 +1273,10 @@ class ProductSearchAutomation extends React.Component{
 
         document.getElementById('head').style.display = "inline";
         document.getElementById('startContent').style.display = "none";
+
+        $("input:checked").each( function(index, ele){
+          $(ele).prop("checked", false);
+        });
 
 
         // let amazonReturn = false;

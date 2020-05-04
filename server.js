@@ -74,7 +74,7 @@ app.post('/searchTermSuggestions', (req, res) => {
 
   searchTermDoc.find({ searchTerm: searchTerm }).sort({frequency:-1}).limit(10).then((resu)=>{
         res.send(resu);
-        console.log(resu)
+        // console.log(resu);
     }).catch(er => {
       res.send([]);
       console.log(er);
@@ -86,7 +86,7 @@ app.post('/getVisitCount', (req, res) => {
 
   visitDoc.find({ inde : 1 }).then(resuu => {
     res.send(resuu);
-    console.log(resuu);
+    // console.log(resuu);
   }).catch(errr => {
     res.send('Retrieving...');
     console.log(errr);
@@ -105,7 +105,7 @@ function suitUp(html){
     let src = $(ele).find('img._2VeolH').attr('src');
     let link = $(ele).find('a._3MPlks').attr('href');
     if(src === undefined || src === "#" || src === ''){
-      console.log(src);
+      // console.log(src);
       console.log('SRC FAILED!');
       return;
     }else{
@@ -116,20 +116,20 @@ function suitUp(html){
       return;
     }else{
       link = 'https://www.flipkart.com' + link;
-      console.log(link);
-      console.log(src);
+      // console.log(link);
+      // console.log(src);
     }
     if(i === 0){
-      carouselInner +=        `<div class="carousel-item active">
+      carouselInner +=        `<div class="carousel-item active yes-ads">
                                   <a href = ${link} target = "_blank" rel="noopener noreferrer">
-                                  <img src=${src} alt="CarouselImage"/>
+                                  <img style="width:100%;height:280px" src=${src} alt="CarouselImage"/>
                                   </a>
                                 </div>
                                     `;
     }else{
-      carouselInner +=        `<div class="carousel-item">
+      carouselInner +=        `<div class="carousel-item yes-ads">
                                   <a href = ${link} target = "_blank" rel="noopener noreferrer">
-                                  <img src=${src} alt="CarouselImage"/>
+                                  <img style="width:100%;height:280px" src=${src} alt="CarouselImage"/>
                                   </a>
                                 </div>
                                     `;
@@ -169,7 +169,7 @@ app.post('/getFirstPage', async(req, res) => {
 
 
 function topFiveImageRetrieval(html){
-  console.log('Cheerio is working on top five, Data is being Retrieved...');
+  // console.log('Cheerio is working on top five, Data is being Retrieved...');
   if(html === undefined || html.data === undefined){
     return 0;
   }else{
@@ -192,11 +192,11 @@ app.post('/initialFireup', async(req, res) => {
 
 
   searchTermDoc.find({}).sort({frequency:-1}).limit(5).then((resu)=>{
-      console.log(resu)
+      // console.log(resu);
       let dataLocal = resu;
 
 
-      console.log('datalocal server ', dataLocal)
+      // console.log('datalocal server ', dataLocal);
       let topFiveAdder = ``;
       let imgSrc = [];
       let topFiveHtml = ``;
@@ -206,27 +206,27 @@ app.post('/initialFireup', async(req, res) => {
           topFiveHtml = axios.get(topFiveUrl);
           imgSrc[i] = topFiveImageRetrieval(await topFiveHtml);
         }catch{
-          console.log('TRYING AGAIN');
+          // console.log('TRYING AGAIN');
           try{
           topFiveHtml = axios.get(topFiveUrl);
           imgSrc[i] = topFiveImageRetrieval(await topFiveHtml);
           }catch{
-            console.log('DOUBLE TRY FAILED!');
+            // console.log('DOUBLE TRY FAILED!');
           }
         }
 
         if(await imgSrc[i] === undefined || await imgSrc[i] === null || await imgSrc[i].length < 10){
-          console.log('NOSRC', imgSrc[i]);
+          // console.log('NOSRC', imgSrc[i]);
           // imgSrc[i] = noImg;
         }else{
-          console.log('SRC', imgSrc[i]);
+          // console.log('SRC', imgSrc[i]);
         }
       });
       Promise.all(dataLocalPromises).then(() => {
-        console.log(imgSrc);
+        // console.log(imgSrc);
         // return imgSrc;
         res.send([resu,imgSrc]);
-        console.log([resu, imgSrc]);
+        // console.log([resu, imgSrc]);
       }).catch(err => {
         console.log(err);
       });
@@ -290,9 +290,9 @@ function fetchAmazon(html){
 
         price = price.replace(/\./g, '');
         let imgSrc = $(elem).find('a.a-link-normal img').attr('srcset');
-        console.log(imgSrc);
+        // console.log(imgSrc);
         imgSrc = imgSrc.slice(imgSrc.indexOf('2.5x')+5, imgSrc.indexOf('3x')-1);
-        console.log(imgSrc);
+        // console.log(imgSrc);
         data.push({
             id : 'amazon' + i,
             website : 'Amazon',
