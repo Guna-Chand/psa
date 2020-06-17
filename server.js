@@ -250,8 +250,11 @@ function fetchAmazon(html){
   if(html === undefined || html.data === undefined){
     return true;
   }else{
+    console.log('AMAZON In');
     const $ = cheerio.load(html.data);
+    try{
     $('div.s-result-list div.s-result-item').each((i, elem) => {
+        console.log('AMAZE IN');
         if($(elem).attr('class').includes('AdHolder')){
           return;
         }else if ($(elem).find('span.a-badge').attr('data-a-badge-type') === "deal") {
@@ -276,11 +279,11 @@ function fetchAmazon(html){
         let name = $(elem).find('span.a-text-normal').first().text();
 
         let ratingCount = '';
-        if(isMobile){
-          ratingCount = $(elem).find('a.a-link-normal span.a-size-small.a-color-secondary').first().text();
-        }else{
+        // if(isMobile){
+        //   ratingCount = $(elem).find('a.a-link-normal span.a-size-small.a-color-secondary').first().text();
+        // }else{
           ratingCount = $(elem).find('a.a-link-normal span.a-size-base').first().text();
-        }
+        // }
         if(ratingCount === '' || ratingCount === undefined){
           ratingCount = '0';
           return;
@@ -306,6 +309,9 @@ function fetchAmazon(html){
             ratingCount : ratingCount
         });
     });
+  }catch(err){
+    console.log(err);
+  }
     // console.log(data);
     console.log("Data from amazon fetched");
     return true;
@@ -545,20 +551,6 @@ app.post('/getSearchResults', async(req, res) => {
   let flipkart = '';
 
   try{
-    amazon = axios.get(amazonUrl);
-    amazonReturn = fetchAmazon(await amazon);
-  }catch{
-    console.log('TRYING AGAIN');
-    try{
-      amazon = axios.get(amazonUrl);
-      amazonReturn = fetchAmazon(await amazon);
-    }catch{
-      console.log('DOUBLE TRY FAILED!');
-      amazonReturn = true;
-    }
-  }
-
-  try{
     snapdeal = axios.get(snapDealUrl);
     snapdealReturn = fetchSnapDeal(await snapdeal);
   }catch{
@@ -569,6 +561,20 @@ app.post('/getSearchResults', async(req, res) => {
     }catch{
       console.log('DOUBLE TRY FAILED!');
       snapdealReturn = true;
+    }
+  }
+
+  try{
+    amazon = axios.get(amazonUrl);
+    amazonReturn = fetchAmazon(await amazon);
+  }catch{
+    console.log('TRYING AGAIN');
+    try{
+      amazon = axios.get(amazonUrl);
+      amazonReturn = fetchAmazon(await amazon);
+    }catch{
+      console.log('DOUBLE TRY FAILED!');
+      amazonReturn = true;
     }
   }
 
