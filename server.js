@@ -553,13 +553,15 @@ app.post('/getSearchResults', async(req, res) => {
   try{
     snapdeal = axios.get(snapDealUrl);
     snapdealReturn = fetchSnapDeal(await snapdeal);
-  }catch{
+  }catch(error){
     console.log('TRYING AGAIN');
+    console.log(error);
     try{
       snapdeal = axios.get(snapDealUrl);
       snapdealReturn = fetchSnapDeal(await snapdeal);
-    }catch{
+    }catch(err){
       console.log('DOUBLE TRY FAILED!');
+      console.log(err);
       snapdealReturn = true;
     }
   }
@@ -567,13 +569,15 @@ app.post('/getSearchResults', async(req, res) => {
   try{
     amazon = axios.get(amazonUrl);
     amazonReturn = fetchAmazon(await amazon);
-  }catch{
+  }catch(error){
     console.log('TRYING AGAIN');
+    console.log(error);
     try{
       amazon = axios.get(amazonUrl);
       amazonReturn = fetchAmazon(await amazon);
-    }catch{
+    }catch(err){
       console.log('DOUBLE TRY FAILED!');
+      console.log(err);
       amazonReturn = true;
     }
   }
@@ -581,13 +585,15 @@ app.post('/getSearchResults', async(req, res) => {
   try{
     flipkart = axios.get(flipkartUrl);
     flipkartReturn = fetchFlipkart(await flipkart);
-  }catch{
+  }catch(error){
     console.log('TRYING AGAIN');
+    console.log(error);
     try{
       flipkart = axios.get(flipkartUrl);
       flipkartReturn = fetchFlipkart(await flipkart);
-    }catch{
+    }catch(err){
       console.log('DOUBLE TRY FAILED!');
+      console.log(err);
       flipkartReturn = true;
     }
   }
