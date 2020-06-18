@@ -540,6 +540,25 @@ app.post('/getSearchResults', async(req, res) => {
   var flipkartUrl = 'https://www.flipkart.com/search?q=' + flipkartSearchTerm + '&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off';
   var snapDealUrl = 'https://www.snapdeal.com/search?keyword='+ snapDealSearchTerm;
 
+  var amazonNewUrl = 'https://www.amazon.in/s?i=aps&k=' + snapDealSearchTerm + '&ref=nb_sb_noss_2&url=search-alias%3Daps'
+
+  var amazonHeaders = {
+    'authority': 'www.amazon.in',
+    'rtt': '200',
+    'downlink': '2',
+    'ect': '4g',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-user': '?1',
+    'sec-fetch-dest': 'document',
+    'referer': amazonUrl,
+    'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8,es;q=0.7',
+    'cookie': 'at-acbin=Atza|IwEBIK0px1Gqti1-AZhSXROXzofVMZhHIAtM6GVc36bGkQmk1HmRc4qSesPDrHUglgoXm-TVkxZv4detTe--jyRscqSw_0tDiNWUE8OwxAcFzVni31Fd-GP7-Rm_z5dL7gSMvm9tHbhZIOpGgS5H1z22rt4Bfkqq5jq6PeiIZSP3hakFAL0fQlivR8r6Y3d27UIChe7r0wU88JqoI0lzq6Fc0PwAxK9NRMF2UCzopRuDUII6CLOQj6Q69dnusVfwlwIumxy278w8D8j8GlJFwCKnQiN2I91mDzjDTk1YW5YbBw2sY5Ja3uRzClpCMMDSiK-ccvx6pCSisFu2p5zbX6sZfEkOhjBRwb0CpoOKbBB1h1pF3jbBge6Sgz9en8fMjNe30xkruWG_9rBqpuYOd0H2rD49zZI7GZ70XAyuOA40Is0ZZg; sess-at-acbin="j4z2I7YbDhjWcTYLIASGMCIdAH6Uhd2Qx0VqCYRRRkU="; sst-acbin=Sst1|PQEhHEgK6WFO88-zOISBRl0CC5wlE9DzroATtxkUx0Cwprn8uFr1rBJVYrXiNyVIkheuaD6RsEQC8-WrqtUo-tZRrmCEgJl1aFhFPKvXKWwzKgnqFeX90vLLHjWmloSW3LvCGO55kpyMfALtEF3CmpF-zrVgCa_cSpEMR3pExYU71pd9Ke9KF1hjOkP3xdjhNs8N3rUj9yfZ7tzBNGNQRmCIG6IGr1zZ2T5kMLcpYdrjZ32DaZ0Km4PsZP98xdfo58Bnm9-0U-bnbt0njvNaM4d0gUKMoVFU1VWrIv5KF-Bc1oOazca5y60O1AyyXKCTwBeLlfGynDvtrnOyIiFLKdpqSg; _rails-root_session=YXBBMFcwZ0VSZlpJNS9qT3NaaHJPZDlFY2YxejJYNVpXWFMyUHR6RGNqL0ExdnVFQVBvemFZOGtVK211U3lrZEdOYTFpdEkya0laOUhvbGVyU0lwMVl1ZnIyZjFjcnF1YjJwL1FCRWwyQm8vM3RkZFNraGdRZ3Y4K1IwL3NkK3piSGF3ZlBFd0VEZEI1dFowV1Z0dWVCYUxpS28rSWhaMXZKTlpTRmtiaURlZ0FHS0VIaStwNEJkMUN1Mm9JaEpTLS1WcUFMYmEyeUtxTnZzOWpyU3pSNEVBPT0%3D--e893dd71731598f66ca5c62ac8432f9e6c79be53; session-id=262-9100105-5016307; i18n-prefs=INR; ubid-acbin=262-4316122-1152821; x-wl-uid=18bfeK+xaij5EKUnYV7fOIj78WqDkoaC1C/HQ5Fxj+xfpuc0e2AtmR6dioljFC06Aqu162Zjt8Os=; visitCount=29; session-token=EG71FCPReiXzWgOCOuEQXtXFT+keu3jKYgDLwCneLsI9HIN+ko4xTguxDQ/V/gjG0pxJiBgv2f60nH26j2guUyStzZY8YvhFwNkkSvvJzjySp/V4nZoeiP8LB27DFs1/qz/itxPyTyMDO5DMVd3nlz1C+z21O2gt6CutnB2cjd3BqsDKPDa9laC+6ewNMVkK; session-id-time=2082758401l; csm-hit=tb:7PEFJDX9HW7B4BTHXE81+s-MSQNNXW2VJNAF38D76SR|1592466208116&t:1592466208116&adb:adblk_no'
+};
+
   let amazonReturn = false;
 
   let flipkartReturn = false;
@@ -567,13 +586,17 @@ app.post('/getSearchResults', async(req, res) => {
   }
 
   try{
-    amazon = axios.get(amazonUrl);
+    amazon = axios.get(amazonNewUrl, {
+             headers: amazonHeaders
+            });
     amazonReturn = fetchAmazon(await amazon);
   }catch(error){
     console.log('TRYING AGAIN');
     console.log(error);
     try{
-      amazon = axios.get(amazonUrl);
+      amazon = axios.get(amazonNewUrl, {
+               headers: amazonHeaders
+              });
       amazonReturn = fetchAmazon(await amazon);
     }catch(err){
       console.log('DOUBLE TRY FAILED!');
