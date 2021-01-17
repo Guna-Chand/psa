@@ -100,10 +100,10 @@ function suitUp(html){
   // console.log(html)
   const $ = cheerio.load(html.data);
   let carouselInner = ``;
-  $('div._37vuDR').each( (i, ele) => {
+  $('div._1mIbUg').each( (i, ele) => {
 
-    let src = $(ele).find('img._2VeolH').attr('src');
-    let link = $(ele).find('a._3MPlks').attr('href');
+    let src = $(ele).find('img._3DIhEh').attr('src');
+    let link = $(ele).find('a._2a3TMW').attr('href');
     if(src === undefined || src === "#" || src === ''){
       // console.log(src);
       console.log('SRC FAILED!');
@@ -250,11 +250,11 @@ function fetchAmazon(html){
   if(html === undefined || html.data === undefined){
     return true;
   }else{
-    console.log('AMAZON In');
+    // console.log('AMAZON In');
     const $ = cheerio.load(html.data);
     try{
     $('div.s-result-list div.s-result-item').each((i, elem) => {
-        console.log('AMAZE IN');
+        // console.log('AMAZE IN');
         if($(elem).attr('class').includes('AdHolder')){
           return;
         }else if ($(elem).find('span.a-badge').attr('data-a-badge-type') === "deal") {
@@ -294,7 +294,11 @@ function fetchAmazon(html){
         price = price.replace(/\./g, '');
         let imgSrc = $(elem).find('a.a-link-normal img').attr('srcset');
         // console.log(imgSrc);
-        imgSrc = imgSrc.slice(imgSrc.indexOf('2.5x')+5, imgSrc.indexOf('3x')-1);
+        if(imgSrc === '' || imgSrc === undefined){
+          imgSrc = '';
+        }else{
+          imgSrc = imgSrc.slice(imgSrc.indexOf('2.5x')+6, imgSrc.indexOf('3x')-1);
+        }
         // console.log(imgSrc);
         data.push({
             id : 'amazon' + i,
@@ -320,9 +324,9 @@ function fetchAmazon(html){
 
 function deepFlipkart(html){
   const $ = cheerio.load(html);
-  console.log('Digging Deep !');
+  // console.log('Digging Deep !');
 
-  let price = $('div._1vC4OE').first().text();
+  let price = $('div._16Jk6d').first().text();
   if(price === "0" || price === "" || price === undefined){
     return false;
   }
@@ -340,15 +344,17 @@ function deepFlipkart(html){
   }else{
     brand = $('div._3lDJ1K img').attr('src');
   }
-  let rating = $('div.hGSR34').first().attr('class');
+  let rating = $('div._16VRIQ div._3LWZlK').first().text();
+  // rating = rating.slice(1,-1);
   if(rating === undefined || rating === ''){
     return false;
-  }else if(rating.includes('YddkNl') === true){
-    return false;
-  }else{
-    rating = $('div.hGSR34').first().text();
   }
-  let ratingCount = $('span._38sUEc').children().first().text();
+  // else if(rating.includes('YddkNl') === true){
+  //   return false;
+  // }else{
+  //   rating = $('div.hGSR34').first().text();
+  // }
+  let ratingCount = $(' div._16VRIQ span._2_R_DZ span').children().first().text();
   if(ratingCount === '' || ratingCount === undefined){
     ratingCount = '0';
     return false;
@@ -356,7 +362,7 @@ function deepFlipkart(html){
     ratingCount = ratingCount.slice(0,ratingCount.indexOf("ating")-2).split(',').join('');
   }
   let img = [];
-  $('div._2_AcLJ').each((i,el) => {
+  $('div.q6DClP').each((i,el) => {
     let imgTemp = $(el).attr('style');
       if(imgTemp !== undefined){
         imgTemp = imgTemp.slice(21,-1);
@@ -379,7 +385,7 @@ function deepFlipkart(html){
     imt = img[0].replace(/\/128/g, '/416');
   }
 
-  let name = $('div._3aS5mM p').first().text();
+  let name = $('span.B_NuCI').first().text();
   return [rating, imt, ratingCount, name, price, brand, img];
 }
 
@@ -391,7 +397,7 @@ function fetchFlipkart(html){
     return true;
   }else{
     const $ = cheerio.load(html.data);
-    category = $('a._32ZSYo').first().text();
+    category = $('a._1jJQdf').first().text();
     if(category !== undefined && category.length > 2){
     //
     }
@@ -401,7 +407,8 @@ function fetchFlipkart(html){
 
     const promises = [];
 
-      $('div._3O0U0u').children().each((i,elem) => {
+      $('div._13oc-S').children().each((i,elem) => {
+        // console.log("Flip IN");
         // $(ele).each((j, elem) => {
             if($(elem).find('div div span').first().text() === "Ad"){
               return true;
@@ -415,6 +422,7 @@ function fetchFlipkart(html){
 
                 promises.push(axios.get(link)
                   .then(response => {
+                    // console.log("FLIIIP IIIN");
                     let temp = deepFlipkart(response.data);
 
                     if(temp === false){
@@ -452,7 +460,6 @@ function fetchFlipkart(html){
                       console.log("Error : ",err);
                   }));
         });
-    // console.log(data);
     console.log("Data from flipkart fetched");
     return  Promise.all(promises).then(() => true).catch(() => false);
   }
