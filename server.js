@@ -1,39 +1,31 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const mongoose  = require('mongoose');
-const Schema  = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const path = require('path');
 const searchTermsSchema = new Schema({
-  searchTerm : { type: String, default: 'Nope' },
-  frequency : { type: Number, min: 1 }
+  searchTerm: { type: String, default: 'Nope' },
+  frequency: { type: Number, min: 1 }
 });
 
 const visitSchema = new Schema({
-  inde : Number,
-  totalVisits : Number,
-  lastVisit : Date
+  inde: Number,
+  totalVisits: Number,
+  lastVisit: Date
 });
 const axios = require('axios');
 const cheerio = require('cheerio');
 const port = process.env.PORT || 5100;
 
-// app.use(cors());
-// app.use(
-//   cors({
-//     origin:'http://localhost:3000',
-//     credentials: true
-//   })
-// );
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-if(process.env.NODE_ENV === 'production'){
-  app.use(express.static( 'client/build' ));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
 
   app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); // relative path
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); // relative path
   });
 }
 
@@ -46,20 +38,18 @@ var expandedData = [];
 var searchTerm = '';
 var category = '';
 
-app.listen(port,() => console.log(`Listening on port ${port}`));
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 mongoose.connect('mongodb+srv://chandu:qwerty1000@cluster-5w20o.mongodb.net/psa?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }).
   catch(error => {
     console.log('CONNECTION TO MONGODB FAILED !');
   });
 
-// var db = mongoose.connection;
-
 mongoose.connection.on('connected', function () {
   console.log('Mongoose CONNECTED! ');
 });
 
-mongoose.connection.on('error',function (err) {
+mongoose.connection.on('error', function (err) {
   console.log('Mongoose connection error: ' + err);
 });
 
@@ -67,26 +57,22 @@ mongoose.connection.on('disconnected', function () {
   console.log('Mongoose connection disconnected');
 });
 
-
-
 app.post('/searchTermSuggestions', (req, res) => {
   searchTerm = new RegExp(req.body.searchTerm);
 
-  searchTermDoc.find({ searchTerm: searchTerm }).sort({frequency:-1}).limit(10).then((resu)=>{
-        res.send(resu);
-        // console.log(resu);
-    }).catch(er => {
-      res.send([]);
-      console.log(er);
-    })
+  searchTermDoc.find({ searchTerm: searchTerm }).sort({ frequency: -1 }).limit(10).then((resu) => {
+    res.send(resu);
+  }).catch(er => {
+    res.send([]);
+    console.log(er);
+  })
 
 });
 
 app.post('/getVisitCount', (req, res) => {
 
-  visitDoc.find({ inde : 1 }).then(resuu => {
+  visitDoc.find({ inde: 1 }).then(resuu => {
     res.send(resuu);
-    // console.log(resuu);
   }).catch(errr => {
     res.send('Retrieving...');
     console.log(errr);
@@ -95,39 +81,33 @@ app.post('/getVisitCount', (req, res) => {
 });
 
 
-function suitUp(html){
-  console.log('Cheerio is working on Start Page...');
-  // console.log(html)
+function suitUp(html) {
   const $ = cheerio.load(html.data);
   let carouselInner = ``;
-  $('div._1mIbUg').each( (i, ele) => {
+  $('div._1mIbUg').each((i, ele) => {
 
     let src = $(ele).find('img._3DIhEh').attr('src');
     let link = $(ele).find('a._2a3TMW').attr('href');
-    if(src === undefined || src === "#" || src === ''){
-      // console.log(src);
-      console.log('SRC FAILED!');
+    if (src === undefined || src === "#" || src === '') {
       return;
-    }else{
+    } else {
       src = src.replace(src.substring(35, src.indexOf("image")), "/3376/560/");
     }
-    if(link === undefined || link === '#' || link === ''){
+    if (link === undefined || link === '#' || link === '') {
       console.log('LINK FAILED!')
       return;
-    }else{
+    } else {
       link = 'https://www.flipkart.com' + link;
-      // console.log(link);
-      // console.log(src);
     }
-    if(i === 0){
-      carouselInner +=        `<div class="carousel-item active yes-ads">
+    if (i === 0) {
+      carouselInner += `<div class="carousel-item active yes-ads">
                                   <a href = ${link} target = "_blank" rel="noopener noreferrer">
                                   <img style="width:100%;height:280px" src=${src} alt="CarouselImage"/>
                                   </a>
                                 </div>
                                     `;
-    }else{
-      carouselInner +=        `<div class="carousel-item yes-ads">
+    } else {
+      carouselInner += `<div class="carousel-item yes-ads">
                                   <a href = ${link} target = "_blank" rel="noopener noreferrer">
                                   <img style="width:100%;height:280px" src=${src} alt="CarouselImage"/>
                                   </a>
@@ -135,9 +115,9 @@ function suitUp(html){
                                     `;
     }
 
-    });
-    if(carouselInner === ``){
-      carouselInner = `
+  });
+  if (carouselInner === ``) {
+    carouselInner = `
                         <div class = "carousel-item active no-ads">
                           <span class = "ad-span">GET THE BEST PRODUCTS EASY AND FAST FROM THIS APPLICATION</span>
                         </div>
@@ -145,21 +125,13 @@ function suitUp(html){
                           <span class = "ad-span">WE CURRENTLY RESEARCH THROUGH AMAZON, FLIPKART AND SNAPDEAL</span>
                         </div>
                       `;
-    }
-    return carouselInner;
+  }
+  return carouselInner;
 };
 
-
-
-
-
-
-
-app.post('/getFirstPage', async(req, res) => {
-  console.log('getFirstPage');
+app.post('/getFirstPage', async (req, res) => {
   axios.get('https://www.flipkart.com/').
     then(resp => {
-      console.log('routing the data');
       let dat = suitUp(resp);
       res.send(dat);
     }).catch(err => {
@@ -168,220 +140,176 @@ app.post('/getFirstPage', async(req, res) => {
 });
 
 
-function topFiveImageRetrieval(html){
-  // console.log('Cheerio is working on top five, Data is being Retrieved...');
-  if(html === undefined || html.data === undefined){
+function topFiveImageRetrieval(html) {
+  if (html === undefined || html.data === undefined) {
     return 0;
-  }else{
+  } else {
     const $ = cheerio.load(html.data);
     return $('div.s-result-list div.s-result-item').first().find('a.a-link-normal img').attr('src');
   }
 }
 
 
-app.post('/initialFireup', async(req, res) => {
+app.post('/initialFireup', async (req, res) => {
   date = new Date();
 
   let result = await visitDoc.updateOne(
-  { inde: 1 },
-  { $inc: { totalVisits: 1 },
-    $set: { lastVisit: date }
-  },
-  { upsert: true }
+    { inde: 1 },
+    {
+      $inc: { totalVisits: 1 },
+      $set: { lastVisit: date }
+    },
+    { upsert: true }
   );
 
-
-  searchTermDoc.find({}).sort({frequency:-1}).limit(5).then((resu)=>{
-      // console.log(resu);
-      let dataLocal = resu;
-
-
-      // console.log('datalocal server ', dataLocal);
-      let topFiveAdder = ``;
-      let imgSrc = [];
-      let topFiveHtml = ``;
-      const dataLocalPromises = dataLocal.map( async(item,i) => {
-        let topFiveUrl = 'https://www.amazon.in/s?k=' + item.searchTerm.split(' ').join('+') + '&ref=nb_sb_noss_2';
-        try{
+  searchTermDoc.find({}).sort({ frequency: -1 }).limit(5).then((resu) => {
+    let dataLocal = resu;
+    let topFiveAdder = ``;
+    let imgSrc = [];
+    let topFiveHtml = ``;
+    const dataLocalPromises = dataLocal.map(async (item, i) => {
+      let topFiveUrl = 'https://www.amazon.in/s?k=' + item.searchTerm.split(' ').join('+') + '&ref=nb_sb_noss_2';
+      try {
+        topFiveHtml = axios.get(topFiveUrl);
+        imgSrc[i] = topFiveImageRetrieval(await topFiveHtml);
+      } catch {
+        try {
           topFiveHtml = axios.get(topFiveUrl);
           imgSrc[i] = topFiveImageRetrieval(await topFiveHtml);
-        }catch{
-          // console.log('TRYING AGAIN');
-          try{
-          topFiveHtml = axios.get(topFiveUrl);
-          imgSrc[i] = topFiveImageRetrieval(await topFiveHtml);
-          }catch{
-            // console.log('DOUBLE TRY FAILED!');
-          }
+        } catch {
         }
+      }
 
-        if(await imgSrc[i] === undefined || await imgSrc[i] === null || await imgSrc[i].length < 10){
-          // console.log('NOSRC', imgSrc[i]);
-          // imgSrc[i] = noImg;
-        }else{
-          // console.log('SRC', imgSrc[i]);
-        }
-      });
-      Promise.all(dataLocalPromises).then(() => {
-        // console.log(imgSrc);
-        // return imgSrc;
-        res.send([resu,imgSrc]);
-        // console.log([resu, imgSrc]);
-      }).catch(err => {
-        console.log(err);
-      });
-
-
-
-
-
-    }).catch(er => {
-      res.send([undefined,undefined,undefined,undefined,undefined]);
-      console.log(er);
-    })
+      if (await imgSrc[i] === undefined || await imgSrc[i] === null || await imgSrc[i].length < 10) {
+      } else {
+      }
+    });
+    Promise.all(dataLocalPromises).then(() => {
+      res.send([resu, imgSrc]);
+    }).catch(err => {
+      console.log(err);
+    });
+  }).catch(er => {
+    res.send([undefined, undefined, undefined, undefined, undefined]);
+    console.log(er);
+  })
 });
 
 
 
 
 
-function fetchAmazon(html){
+function fetchAmazon(html) {
   console.log('Cheerio is working on Amazon, Data is being Retrieved...');
-  if(html === undefined || html.data === undefined){
+  if (html === undefined || html.data === undefined) {
     return true;
-  }else{
-    // console.log('AMAZON In');
+  } else {
     const $ = cheerio.load(html.data);
-    try{
-    $('div.s-result-list div.s-result-item').each((i, elem) => {
-        // console.log('AMAZE IN');
-        if($(elem).attr('class').includes('AdHolder')){
+    try {
+      $('div.s-result-list div.s-result-item').each((i, elem) => {
+        if ($(elem).attr('class').includes('AdHolder')) {
           return;
-        }else if ($(elem).find('span.a-badge').attr('data-a-badge-type') === "deal") {
+        } else if ($(elem).find('span.a-badge').attr('data-a-badge-type') === "deal") {
           return;
         }
         let link = $(elem).find('a.a-link-normal').first().attr('href');
-        if(link === undefined || link === "#" || link === ""){
-            return true;
+        if (link === undefined || link === "#" || link === "") {
+          return true;
         }
         let rating = $(elem).find('i.a-icon-star-small span').first().text();
-        if(rating === "" || rating === undefined){
-            rating = 0;
-            return;
-        }else{
-            rating = rating.split(' ');
-            rating = rating[0];
+        if (rating === "" || rating === undefined) {
+          rating = 0;
+          return;
+        } else {
+          rating = rating.split(' ');
+          rating = rating[0];
         }
         let price = $(elem).find('span.a-price-whole').first().text();
-        if(price === "0" || price === "" ||price === undefined){
+        if (price === "0" || price === "" || price === undefined) {
           return;
         }
         let name = $(elem).find('span.a-text-normal').first().text();
 
         let ratingCount = '';
-        // if(isMobile){
-        //   ratingCount = $(elem).find('a.a-link-normal span.a-size-small.a-color-secondary').first().text();
-        // }else{
-          ratingCount = $(elem).find('a.a-link-normal span.a-size-base').first().text();
-        // }
-        if(ratingCount === '' || ratingCount === undefined){
+        ratingCount = $(elem).find('a.a-link-normal span.a-size-base').first().text();
+        if (ratingCount === '' || ratingCount === undefined) {
           ratingCount = '0';
           return;
-        }else{
+        } else {
           ratingCount = ratingCount.split(',').join('');
         }
 
         price = price.replace(/\./g, '');
         let imgSrc = $(elem).find('a.a-link-normal img').attr('srcset');
-        // console.log(imgSrc);
-        if(imgSrc === '' || imgSrc === undefined){
+        if (imgSrc === '' || imgSrc === undefined) {
           imgSrc = '';
-        }else{
-          imgSrc = imgSrc.slice(imgSrc.indexOf('2.5x')+6, imgSrc.indexOf('3x')-1);
+        } else {
+          imgSrc = imgSrc.slice(imgSrc.indexOf('2.5x') + 6, imgSrc.indexOf('3x') - 1);
         }
-        // console.log(imgSrc);
         data.push({
-            id : 'amazon' + i,
-            website : 'Amazon',
-            link : 'https://www.amazon.in' + link,
-            imageSrc : imgSrc,
-            name : name,
-            title : name,
-            brand : $(elem).find('span.a-size-base-plus').text(),
-            price : price,
-            rating : rating,
-            ratingCount : ratingCount
+          id: 'amazon' + i,
+          website: 'Amazon',
+          link: 'https://www.amazon.in' + link,
+          imageSrc: imgSrc,
+          name: name,
+          title: name,
+          brand: $(elem).find('span.a-size-base-plus').text(),
+          price: price,
+          rating: rating,
+          ratingCount: ratingCount
         });
-    });
-  }catch(err){
-    console.log(err);
-  }
-    // console.log(data);
+      });
+    } catch (err) {
+      console.log(err);
+    }
     console.log("Data from amazon fetched");
     return true;
   }
 }
 
-function deepFlipkart(html){
+function deepFlipkart(html) {
   const $ = cheerio.load(html);
-  // console.log('Digging Deep !');
 
   let price = $('div._16Jk6d').first().text();
-  if(price === "0" || price === "" || price === undefined){
+  if (price === "0" || price === "" || price === undefined) {
     return false;
   }
   let rupee = price[0];
   price = price.slice(1,);
-  if(price.includes(rupee) === true){
+  if (price.includes(rupee) === true) {
     return false;
   }
 
   let brand = 'NoBrand';
 
   brand = $('span._2J4LW6').text();
-  if(brand.length > 1){
+  if (brand.length > 1) {
     brand = brand.slice(0, -6);
-  }else{
+  } else {
     brand = $('div._3lDJ1K img').attr('src');
   }
   let rating = $('div._16VRIQ div._3LWZlK').first().text();
-  // rating = rating.slice(1,-1);
-  if(rating === undefined || rating === ''){
+  if (rating === undefined || rating === '') {
     return false;
   }
-  // else if(rating.includes('YddkNl') === true){
-  //   return false;
-  // }else{
-  //   rating = $('div.hGSR34').first().text();
-  // }
   let ratingCount = $(' div._16VRIQ span._2_R_DZ span').children().first().text();
-  if(ratingCount === '' || ratingCount === undefined){
+  if (ratingCount === '' || ratingCount === undefined) {
     ratingCount = '0';
     return false;
-  }else{
-    ratingCount = ratingCount.slice(0,ratingCount.indexOf("ating")-2).split(',').join('');
+  } else {
+    ratingCount = ratingCount.slice(0, ratingCount.indexOf("ating") - 2).split(',').join('');
   }
   let img = [];
-  $('div.q6DClP').each((i,el) => {
+  $('div.q6DClP').each((i, el) => {
     let imgTemp = $(el).attr('style');
-      if(imgTemp !== undefined){
-        imgTemp = imgTemp.slice(21,-1);
-        // imgTemp = imgTemp.replace(/\/128/g, '/1664');
-        img.push(imgTemp);
-      }
-    });
-
-  // if(img[0] === undefined){
-  //   console.log($('#jsonLD').data);
-  //   let imgTem = $('img._1Nyybr').first().attr('src');
-  //   console.log('IN', imgTem);
-  //   if(imgTem !== undefined){
-  //     img.push();
-  //   }
-  // }
+    if (imgTemp !== undefined) {
+      imgTemp = imgTemp.slice(21, -1);
+      img.push(imgTemp);
+    }
+  });
 
   let imt = '';
-  if(img[0] !== undefined){
+  if (img[0] !== undefined) {
     imt = img[0].replace(/\/128/g, '/416');
   }
 
@@ -389,153 +317,130 @@ function deepFlipkart(html){
   return [rating, imt, ratingCount, name, price, brand, img];
 }
 
-function fetchFlipkart(html){
+function fetchFlipkart(html) {
 
   console.log('Cheerio is working on Flipkart, Data is being Retrieved...');
 
-  if(html === undefined || html.data === undefined){
+  if (html === undefined || html.data === undefined) {
     return true;
-  }else{
+  } else {
     const $ = cheerio.load(html.data);
     category = $('a._1jJQdf').first().text();
-    if(category !== undefined && category.length > 2){
-    //
+    if (category !== undefined && category.length > 2) {
     }
-    else{
+    else {
       category = 'UNABLE TO DETECT';
     }
 
     const promises = [];
 
-      $('div._13oc-S').children().each((i,elem) => {
-        // console.log("Flip IN");
-        // $(ele).each((j, elem) => {
-            if($(elem).find('div div span').first().text() === "Ad"){
-              return true;
-            }
-            let link = $(elem).find('a').first().attr('href');
-            if(link === undefined || link === "#" || link === ""){
-                return true;
-            }else{
-              link = 'https://www.flipkart.com' + link;
-            }
+    $('div._13oc-S').children().each((i, elem) => {
+      if ($(elem).find('div div span').first().text() === "Ad") {
+        return true;
+      }
+      let link = $(elem).find('a').first().attr('href');
+      if (link === undefined || link === "#" || link === "") {
+        return true;
+      } else {
+        link = 'https://www.flipkart.com' + link;
+      }
 
-                promises.push(axios.get(link)
-                  .then(response => {
-                    // console.log("FLIIIP IIIN");
-                    let temp = deepFlipkart(response.data);
+      promises.push(axios.get(link)
+        .then(response => {
+          let temp = deepFlipkart(response.data);
 
-                    if(temp === false){
-                      return;
-                    }
+          if (temp === false) {
+            return;
+          }
 
-                    let name = temp[3];
+          let name = temp[3];
 
-                    data.push({
-                        id : 'flip' + i,
-                        website : 'Flipkart',
-                        link : link,
-                        imageSrc : temp[1],
-                        name : name,
-                        title : name,
-                        brand : temp[5],
-                        price : temp[4],
-                        rating : temp[0],
-                        ratingCount : temp[2]
-                    });
-                    expandedData.push({
-                      id : 'flip' + i,
-                      website : 'Flipkart',
-                      link : link,
-                      imageSrc : temp[1],
-                      name : name,
-                      title : name,
-                      brand : temp[5],
-                      price : temp[4],
-                      rating : temp[0],
-                      ratingCount : temp[2],
-                      images : temp[6]
-                    });
-                  }).catch(err => {
-                      console.log("Error : ",err);
-                  }));
-        });
+          data.push({
+            id: 'flip' + i,
+            website: 'Flipkart',
+            link: link,
+            imageSrc: temp[1],
+            name: name,
+            title: name,
+            brand: temp[5],
+            price: temp[4],
+            rating: temp[0],
+            ratingCount: temp[2]
+          });
+          expandedData.push({
+            id: 'flip' + i,
+            website: 'Flipkart',
+            link: link,
+            imageSrc: temp[1],
+            name: name,
+            title: name,
+            brand: temp[5],
+            price: temp[4],
+            rating: temp[0],
+            ratingCount: temp[2],
+            images: temp[6]
+          });
+        }).catch(err => {
+          console.log("Error : ", err);
+        }));
+    });
     console.log("Data from flipkart fetched");
-    return  Promise.all(promises).then(() => true).catch(() => false);
+    return Promise.all(promises).then(() => true).catch(() => false);
   }
 }
 
-function fetchSnapDeal(html){
+function fetchSnapDeal(html) {
 
   console.log('Cheerio is working on SnapDeal, Data is being Retrieved...');
-  if(html === undefined || html.data === undefined){
+  if (html === undefined || html.data === undefined) {
     return true;
-  }else{
+  } else {
     const $ = cheerio.load(html.data);
     $('div.product-tuple-listing').each((i, elem) => {
       let link = $(elem).find('a.dp-widget-link').first().attr('href');
       let imageSrc = $(elem).find('picture.picture-elem source').attr('srcset');
-      // console.log(imageSrc);
-      if(imageSrc === undefined || imageSrc === ''){
+      if (imageSrc === undefined || imageSrc === '') {
         imageSrc = $(elem).find('picture.picture-elem img').attr('src');
-        // console.log('undefined so ', imageSrc)
       }
       let name = $(elem).find('p.product-title').text();
 
       let price = $(elem).find('span.product-price').first().text();
       price = price.slice(3,).trim();
       let rating = $(elem).find('div.filled-stars').attr('style');
-      if(rating==='' || rating === undefined){
-        rating =0;
+      if (rating === '' || rating === undefined) {
+        rating = 0;
         return;
-      }else{
-        rating = Number(rating.slice(6,-1))*(5/100);
+      } else {
+        rating = Number(rating.slice(6, -1)) * (5 / 100);
         rating = rating.toFixed(1);
       }
 
       let ratingCount = $(elem).find('p.product-rating-count').text();
-      if(ratingCount==='' || ratingCount === undefined){
-        ratingCount =0;
-      }else{
-        ratingCount = ratingCount.slice(1,-1);
+      if (ratingCount === '' || ratingCount === undefined) {
+        ratingCount = 0;
+      } else {
+        ratingCount = ratingCount.slice(1, -1);
       }
 
       data.push({
-          id : 'snap' + i,
-          website : 'SnapDeal',
-          link : link,
-          imageSrc : imageSrc,
-          name : name,
-          title : name,
-          brand : 'None',
-          price : price,
-          rating : rating,
-          ratingCount : ratingCount
+        id: 'snap' + i,
+        website: 'SnapDeal',
+        link: link,
+        imageSrc: imageSrc,
+        name: name,
+        title: name,
+        brand: 'None',
+        price: price,
+        rating: rating,
+        ratingCount: ratingCount
       });
-
     });
-
-    // console.log(data);
     console.log("Data from Snapdeal fetched");
     return true;
   }
 }
 
-
-
-
-
-
-
-
-app.post('/getSearchResults', async(req, res) => {
-  // let timer = 0;
-  // setInterval(function () {
-  //   timer += 1;
-  //   if(timer > 10){
-  //     res.send([data,expandedData,category]);
-  //   }
-  // }, 1000);
+app.post('/getSearchResults', async (req, res) => {
   searchTerm = req.body.searchTerm;
   data = [];
   expandedData = [];
@@ -545,10 +450,8 @@ app.post('/getSearchResults', async(req, res) => {
 
   var amazonUrl = 'https://www.amazon.in/s?k=' + amazonSearchTerm + '&ref=nb_sb_noss_2';
   var flipkartUrl = 'https://www.flipkart.com/search?q=' + flipkartSearchTerm + '&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off';
-  var snapDealUrl = 'https://www.snapdeal.com/search?keyword='+ snapDealSearchTerm;
-
+  var snapDealUrl = 'https://www.snapdeal.com/search?keyword=' + snapDealSearchTerm;
   var amazonNewUrl = 'https://www.amazon.in/s?i=aps&k=' + snapDealSearchTerm + '&ref=nb_sb_noss_2&url=search-alias%3Daps'
-
   var amazonHeaders = {
     'authority': 'www.amazon.in',
     'rtt': '200',
@@ -564,105 +467,85 @@ app.post('/getSearchResults', async(req, res) => {
     'referer': amazonUrl,
     'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8,es;q=0.7',
     'cookie': 'at-acbin=Atza|IwEBIK0px1Gqti1-AZhSXROXzofVMZhHIAtM6GVc36bGkQmk1HmRc4qSesPDrHUglgoXm-TVkxZv4detTe--jyRscqSw_0tDiNWUE8OwxAcFzVni31Fd-GP7-Rm_z5dL7gSMvm9tHbhZIOpGgS5H1z22rt4Bfkqq5jq6PeiIZSP3hakFAL0fQlivR8r6Y3d27UIChe7r0wU88JqoI0lzq6Fc0PwAxK9NRMF2UCzopRuDUII6CLOQj6Q69dnusVfwlwIumxy278w8D8j8GlJFwCKnQiN2I91mDzjDTk1YW5YbBw2sY5Ja3uRzClpCMMDSiK-ccvx6pCSisFu2p5zbX6sZfEkOhjBRwb0CpoOKbBB1h1pF3jbBge6Sgz9en8fMjNe30xkruWG_9rBqpuYOd0H2rD49zZI7GZ70XAyuOA40Is0ZZg; sess-at-acbin="j4z2I7YbDhjWcTYLIASGMCIdAH6Uhd2Qx0VqCYRRRkU="; sst-acbin=Sst1|PQEhHEgK6WFO88-zOISBRl0CC5wlE9DzroATtxkUx0Cwprn8uFr1rBJVYrXiNyVIkheuaD6RsEQC8-WrqtUo-tZRrmCEgJl1aFhFPKvXKWwzKgnqFeX90vLLHjWmloSW3LvCGO55kpyMfALtEF3CmpF-zrVgCa_cSpEMR3pExYU71pd9Ke9KF1hjOkP3xdjhNs8N3rUj9yfZ7tzBNGNQRmCIG6IGr1zZ2T5kMLcpYdrjZ32DaZ0Km4PsZP98xdfo58Bnm9-0U-bnbt0njvNaM4d0gUKMoVFU1VWrIv5KF-Bc1oOazca5y60O1AyyXKCTwBeLlfGynDvtrnOyIiFLKdpqSg; _rails-root_session=YXBBMFcwZ0VSZlpJNS9qT3NaaHJPZDlFY2YxejJYNVpXWFMyUHR6RGNqL0ExdnVFQVBvemFZOGtVK211U3lrZEdOYTFpdEkya0laOUhvbGVyU0lwMVl1ZnIyZjFjcnF1YjJwL1FCRWwyQm8vM3RkZFNraGdRZ3Y4K1IwL3NkK3piSGF3ZlBFd0VEZEI1dFowV1Z0dWVCYUxpS28rSWhaMXZKTlpTRmtiaURlZ0FHS0VIaStwNEJkMUN1Mm9JaEpTLS1WcUFMYmEyeUtxTnZzOWpyU3pSNEVBPT0%3D--e893dd71731598f66ca5c62ac8432f9e6c79be53; session-id=262-9100105-5016307; i18n-prefs=INR; ubid-acbin=262-4316122-1152821; x-wl-uid=18bfeK+xaij5EKUnYV7fOIj78WqDkoaC1C/HQ5Fxj+xfpuc0e2AtmR6dioljFC06Aqu162Zjt8Os=; visitCount=29; session-token=EG71FCPReiXzWgOCOuEQXtXFT+keu3jKYgDLwCneLsI9HIN+ko4xTguxDQ/V/gjG0pxJiBgv2f60nH26j2guUyStzZY8YvhFwNkkSvvJzjySp/V4nZoeiP8LB27DFs1/qz/itxPyTyMDO5DMVd3nlz1C+z21O2gt6CutnB2cjd3BqsDKPDa9laC+6ewNMVkK; session-id-time=2082758401l; csm-hit=tb:7PEFJDX9HW7B4BTHXE81+s-MSQNNXW2VJNAF38D76SR|1592466208116&t:1592466208116&adb:adblk_no'
-};
-
+  };
   let amazonReturn = false;
-
   let flipkartReturn = false;
-
   let snapdealReturn = false;
-
   let amazon = '';
   let snapdeal = '';
   let flipkart = '';
 
-  try{
+  try {
     snapdeal = axios.get(snapDealUrl);
     snapdealReturn = fetchSnapDeal(await snapdeal);
-  }catch(error){
+  } catch (error) {
     console.log('TRYING AGAIN');
     console.log(error);
-    try{
+    try {
       snapdeal = axios.get(snapDealUrl);
       snapdealReturn = fetchSnapDeal(await snapdeal);
-    }catch(err){
+    } catch (err) {
       console.log('DOUBLE TRY FAILED!');
       console.log(err);
       snapdealReturn = true;
     }
   }
 
-  try{
+  try {
     amazon = axios.get(amazonNewUrl, {
-             headers: amazonHeaders
-            });
+      headers: amazonHeaders
+    });
     amazonReturn = fetchAmazon(await amazon);
-  }catch(error){
+  } catch (error) {
     console.log('TRYING AGAIN');
     console.log(error);
-    try{
+    try {
       amazon = axios.get(amazonNewUrl, {
-               headers: amazonHeaders
-              });
+        headers: amazonHeaders
+      });
       amazonReturn = fetchAmazon(await amazon);
-    }catch(err){
+    } catch (err) {
       console.log('DOUBLE TRY FAILED!');
       console.log(err);
       amazonReturn = true;
     }
   }
 
-  try{
+  try {
     flipkart = axios.get(flipkartUrl);
     flipkartReturn = fetchFlipkart(await flipkart);
-  }catch(error){
+  } catch (error) {
     console.log('TRYING AGAIN');
     console.log(error);
-    try{
+    try {
       flipkart = axios.get(flipkartUrl);
       flipkartReturn = fetchFlipkart(await flipkart);
-    }catch(err){
+    } catch (err) {
       console.log('DOUBLE TRY FAILED!');
       console.log(err);
       flipkartReturn = true;
     }
   }
 
-  if(await flipkartReturn === true && await amazonReturn === true && await snapdealReturn === true){
-    // console.log(flipkartReturn, amazonReturn, snapdealReturn);
-    // console.log([data,expandedData,category]);
-      res.send([data,expandedData,category]);
+  if (await flipkartReturn === true && await amazonReturn === true && await snapdealReturn === true) {
+    res.send([data, expandedData, category]);
 
   }
-
-
-
-
 
   let result = await searchTermDoc.updateOne(
-  { searchTerm: searchTerm },
-  { $inc: { frequency: 1 } },
-  { upsert: true }
+    { searchTerm: searchTerm },
+    { $inc: { frequency: 1 } },
+    { upsert: true }
   );
 
-
-  if(result === 1){
+  if (result === 1) {
     console.log('UPDATED');
-    // res.send("UPDATED SUCCESFULLY");
-  }else{
+  } else {
     console.log('INSERTED');
-    // res.send("INSERTED SUCCESFULLY");
   }
-
 });
 
-
-
-
-
-
-
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
   mongoose.connection.close(function () {
     console.log('Mongoose default connection disconnected through app termination');
     process.exit(0);
