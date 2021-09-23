@@ -126,7 +126,7 @@ body {
 
 .staticPageBackground {
   height: 100%;
-  background-image: url("./addImg.png");
+  background-image: url("../images/addImg.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: right;
@@ -581,7 +581,7 @@ h4 {
 
 .aboutBackground {
   margin-top: 100px;
-  background-image: url("./addImg1.png");
+  background-image: url("../images/addImg1.png");
   background-repeat: no-repeat;
   background-position: right;
   background-size: contain;

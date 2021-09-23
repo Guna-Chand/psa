@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css';
-import './ResultV2.css';
-import noImg from './noImg.jpg';
+import '../css/App.css';
+import '../css/ResultV2.css';
+import noImg from '../images/noImg.jpg';
 import { FaTimesCircle } from "react-icons/fa";
 import { IoMdArrowDropupCircle, IoIosArrowForward } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
