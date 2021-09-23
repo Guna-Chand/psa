@@ -1,9 +1,16 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const cors = require('cors');
-const mongoose = require('mongoose');
+import cors from 'cors';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const path = require('path');
+import path from 'path';
+import axios from 'axios';
+import cheerio from 'cheerio';
+const port = process.env.PORT || 5100;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 const searchTermsSchema = new Schema({
   searchTerm: { type: String, default: 'Nope' },
   frequency: { type: Number, min: 1 }
@@ -14,12 +21,6 @@ const visitSchema = new Schema({
   totalVisits: Number,
   lastVisit: Date
 });
-const axios = require('axios');
-const cheerio = require('cheerio');
-const port = process.env.PORT || 5100;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
@@ -151,7 +152,7 @@ function topFiveImageRetrieval(html) {
 
 
 app.post('/initialFireup', async (req, res) => {
-  date = new Date();
+  let date = new Date();
 
   let result = await visitDoc.updateOne(
     { inde: 1 },
@@ -529,7 +530,6 @@ app.post('/getSearchResults', async (req, res) => {
 
   if (await flipkartReturn === true && await amazonReturn === true && await snapdealReturn === true) {
     res.send([data, expandedData, category]);
-
   }
 
   let result = await searchTermDoc.updateOne(
@@ -543,6 +543,23 @@ app.post('/getSearchResults', async (req, res) => {
   } else {
     console.log('INSERTED');
   }
+});
+
+app.post('/sendReport', async (req, res) => {
+  let data = {
+    service_id: 'service_oe8salj',
+    template_id: 'PSATemplate',
+    user_id: 'user_FBAGBbzqImK25vE4FKYBD',
+    template_params: { 'from_name': req.body.fromName, 'message_html': req.body.messageHtml, 'user_agent': req.body.userAgent },
+    accessToken: 'f41e347bd28bd50cab3e6fe39aaa9b11'
+  };
+
+  axios.post('https://api.emailjs.com/api/v1.0/email/send', data)
+    .then(resp => {
+      res.send("success");
+    }).catch(err => {
+      res.send(err);
+    });
 });
 
 process.on('SIGINT', function () {

@@ -6,7 +6,7 @@ import { FaTimesCircle } from "react-icons/fa";
 import { IoMdArrowDropupCircle, IoIosArrowForward } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 import { TiArrowSortedUp } from "react-icons/ti";
-import { isMobile, osVersion, osName, fullBrowserVersion, browserName, engineName, getUA, deviceType } from 'react-device-detect';
+import { isMobile, getUA } from 'react-device-detect';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import { HashLoader, BarLoader } from 'react-spinners';
@@ -106,7 +106,6 @@ class ProductSearchAutomation extends React.Component {
       }
     };
 
-
     try {
       window.$("#sliderId").ionRangeSlider({
         skin: "flat",
@@ -129,7 +128,6 @@ class ProductSearchAutomation extends React.Component {
     } catch (err) {
       console.log(err);
     }
-    console.log('Fetching total page visits');
     axios.post('/getVisitCount')
       .then(res => {
         if (res.data !== 'Retrieving...') {
@@ -210,9 +208,6 @@ class ProductSearchAutomation extends React.Component {
     }
   };
 
-
-
-
   fetchTopFive(dataLocal, imgSrc) {
     let topFiveAdder = ``;
 
@@ -229,7 +224,6 @@ class ProductSearchAutomation extends React.Component {
                     `;
       document.getElementById('top5Content').innerHTML += topFiveAdder;
     });
-
 
     $(".col-item-inner").map((index, ele) => {
       $(ele).bind("click", () => this.dropdownCall(dataLocal[index].searchTerm));
@@ -274,7 +268,6 @@ class ProductSearchAutomation extends React.Component {
     this.resultInterfaceUpdate();
   }
 
-
   updateResultByRating(ratingLocal) {
     let temp = data.filter(ele => {
       let rating = parseFloat(ele.rating);
@@ -285,7 +278,6 @@ class ProductSearchAutomation extends React.Component {
     });
     data = temp;
   };
-
 
   updateResultByPrice(priceMin, priceMax) {
     let temp = fixedData.filter(ele => {
@@ -310,9 +302,6 @@ class ProductSearchAutomation extends React.Component {
     data = temp;
   };
 
-
-
-
   displayWebsiteCheckbox(dataLocal) {
     document.getElementById('websiteCheckboxDiv').innerHTML = '';
     let webs = new Map();
@@ -336,9 +325,6 @@ class ProductSearchAutomation extends React.Component {
 
 
   rank() {
-
-
-
     data.sort(function (a, b) {
       return b.rating - a.rating;
     });
@@ -382,7 +368,6 @@ class ProductSearchAutomation extends React.Component {
     window.$('.largeImage').zoom({ on: 'click' });
   };
 
-
   resultBlockClick = e => {
     let idLocal = e;
     let smallImagesAdder = ``;
@@ -415,10 +400,7 @@ class ProductSearchAutomation extends React.Component {
           }
         });
       });
-
-
     } else {
-
       let largeImagesAdder = `<div class = "largeImage"><span class="largeImagehelper"></span><img class = "largeImageTag" src = ${obj.imageSrc.replace(/\/416/g, '/1664') || noImg} alt = "NULL"/></div>`;
       obj.images.forEach((item, i) => {
         smallImagesAdder += `
@@ -447,13 +429,11 @@ class ProductSearchAutomation extends React.Component {
     }
   };
 
-
   resultInterfaceUpdate() {
     var resultAdder = ``;
     if (data.length !== 0) {
 
       this.rank();
-
 
       data.forEach((log, index) => {
         if (index % 4 === 0 && index !== 1) {
@@ -566,7 +546,6 @@ class ProductSearchAutomation extends React.Component {
 
             this.displayWebsiteCheckbox(data);
 
-
             let max = Math.max.apply(Math, data.map(function (ele) { return parseInt(ele.price.replace(/,/g, '')); }));
 
             window.$("#sliderId").data("ionRangeSlider").update({
@@ -576,7 +555,6 @@ class ProductSearchAutomation extends React.Component {
             });
 
             this.resultInterfaceUpdate();
-
 
             document.getElementById('head').style.display = "none";
             document.getElementById('result').style.visibility = "visible";
@@ -606,7 +584,6 @@ class ProductSearchAutomation extends React.Component {
             }
             this.resultInterfaceUpdate();
 
-
             document.getElementById('head').style.display = "none";
             document.getElementById('result').style.visibility = "visible";
             document.getElementById('leftResult').style.visibility = "visible";
@@ -622,14 +599,11 @@ class ProductSearchAutomation extends React.Component {
     }
   };
 
-
   reloading = e => {
 
     window.location.reload();
     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
   };
-
-
 
   reportToggle = e => {
 
@@ -658,24 +632,24 @@ class ProductSearchAutomation extends React.Component {
     this.setState({ reportContent: event.target.value });
   }
 
-
   sendReport = e => {
     e.preventDefault();
 
     if (this.state.reportContent.trim() === '') {
       alert('Description must not be empty !');
     } else {
-      let device_details = `<span style = "color : gray;"><b><u>DEVICE DETAILS :</u><br/>OS : </b>` + osName + ' ' + osVersion + `<br/><b>Browser : </b>` + browserName + ' ' + fullBrowserVersion + `<br/><b>Device Type : </b>` + deviceType + `<br/><b>User Agent : </b>` + getUA + `<br/><b>Engine Name : </b>` + engineName + `</span>`;
 
-      window.emailjs.send("gmail", "PSATemplate", { "from_name": this.state.reportEmail, "message_html": this.state.reportContent, "device_details": device_details })
+      axios.post('/sendReport', { fromName: this.state.reportEmail, messageHtml: this.state.reportContent, userAgent: getUA })
         .then(res => {
-          this.timeoutMsgTrigger('Reported Succesfully');
-          this.reportToggle();
-          console.log("EMAIL SENT !");
-        })
-        .catch(err => {
+          if (res.data === "success") {
+            this.timeoutMsgTrigger('Reported Succesfully');
+            this.reportToggle();
+          } else {
+            throw res.data;
+          }
+        }).catch(err => {
           console.log("Error : ", err);
-          this.timeoutMsgTrigger('Report unsuccesful! Please try again.')
+          this.timeoutMsgTrigger('Report unsuccessful! Please try again.')
         });
     }
   }
@@ -1547,7 +1521,10 @@ class ProductSearchAutomation extends React.Component {
                   <Popover id="popover-basic">
                     <Popover.Title as="h3">Terms applied for reporting</Popover.Title>
                     <Popover.Content>
-                      We collect <strong>Device type</strong>, <strong>OS name</strong>, <strong>OS version</strong>, <strong>Browser name</strong>, <strong>Browser version</strong>, <strong>User Agent</strong> and <strong>Engine name</strong> from your device for the better understanding of your report.
+                      <ul>
+                        <li>We collect <strong>User Agent</strong> to understand your report better.</li>
+                        <li>User provided email will be used for further communication.</li>
+                      </ul>
                     </Popover.Content>
                   </Popover>}>
                   <span className="reportTermsTrigger">Terms</span>
