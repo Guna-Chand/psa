@@ -1,0 +1,162 @@
+.resultRowV2 {
+  width: 100%;
+  margin-left: 0 !important;
+}
+
+.resultColV2 {
+  padding: 0 5px !important;
+  max-width: 25% !important;
+  transition: box-shadow 0.2s ease-in-out;
+  transition-delay: 0s;
+  overflow: hidden;
+}
+
+.resultColV2:hover {
+  position: relative;
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.11);
+}
+
+.resultColV2:hover .contenV2 {
+  transform: translate3d(0px, -40px, 0px);
+}
+
+.resultColV2:hover > .rankTagV2 {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.rankTagV2 {
+  position: absolute;
+  background-color: brown;
+  font-size: 16px;
+  display: none;
+  height: 35px;
+  font-family: "Ubuntu", sans-serif;
+  border-bottom-right-radius: 40px;
+  border-bottom-left-radius: 40px;
+  padding: 6px;
+  left: 10px;
+  min-width: 30px;
+  color: white;
+  box-shadow: 0 2px 5px rgba(5, 25, 55, 1);
+  user-select: none;
+  transition: 0.2s;
+}
+
+.test {
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  padding-top: 80%;
+}
+
+.imV2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  max-width: 100%;
+  height: 100%;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: white;
+  justify-content: center;
+  padding: 15px;
+  text-align: center;
+}
+
+.productImageV2 {
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+}
+
+.contenV2 {
+  position: relative;
+  transition: transform 0.2s ease-in-out;
+  transition-delay: 0.1s;
+  text-align: left;
+  background-color: white;
+  padding-top: 5px;
+  height: 120px;
+  font-size: 25px;
+}
+
+.contenV2 .n-ratingsV2 {
+  font-size: 15px;
+}
+
+.elip {
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  color: black;
+  cursor: pointer;
+  overflow: hidden !important;
+  padding: 0 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.priceV2 {
+  font-size: 18px;
+  padding: 0 10px;
+  color: brown;
+  font-variant: small-caps;
+  font-family: "Ubuntu";
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.n-ratingsV2 {
+  color: gray;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ratingV2 {
+  font-family: "Ubuntu", sans-serif;
+  background-color: green;
+  color: white;
+  border-radius: 3px;
+  user-select: none;
+  padding: 3px 7px;
+  font-size: 13px !important;
+  letter-spacing: 1px;
+}
+
+.websiteNameV2 {
+  font-size: 12px;
+  color: gray;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.goToWebsiteV2 {
+  position: absolute !important;
+  top: 100%;
+  width: 100%;
+}
+
+.goToWebsiteV2Button {
+  width: 100%;
+  height: 30px;
+  margin-bottom: 5px;
+  font-size: 15px !important;
+  font-weight: bold !important;
+}
+
+.goToWebsiteV2 .btn {
+  padding: 2px 0 !important;
+}

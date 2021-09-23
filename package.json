@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "server": "node server.js",
     "client": "npm start --prefix client",
@@ -12,11 +13,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
-    "concurrently": "^5.1.0",
+    "axios": "^0.21.4",
+    "cheerio": "^1.0.0-rc.10",
+    "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.9.4"
+    "mongoose": "^5.13.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Guna-Chand/psa.git"
   }
 }
