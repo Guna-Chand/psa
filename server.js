@@ -59,14 +59,18 @@ mongoose.connection.on('disconnected', function () {
 });
 
 app.post('/searchTermSuggestions', (req, res) => {
-  searchTerm = new RegExp(req.body.searchTerm);
+  try {
+    searchTerm = new RegExp(req.body.searchTerm);
 
-  searchTermDoc.find({ searchTerm: searchTerm }).sort({ frequency: -1 }).limit(10).then((resu) => {
-    res.send(resu);
-  }).catch(er => {
-    res.send([]);
-    console.log(er);
-  })
+    searchTermDoc.find({ searchTerm: searchTerm }).sort({ frequency: -1 }).limit(10).then((resu) => {
+      res.send(resu);
+    }).catch(er => {
+      res.send([]);
+      console.log(er);
+    })
+  } catch (error) {
+    console.log(error);
+  }
 
 });
 
@@ -83,47 +87,49 @@ app.post('/getVisitCount', (req, res) => {
 
 
 function suitUp(html) {
-  const $ = cheerio.load(html.data);
   let carouselInner = ``;
-  $('div._1mIbUg').each((i, ele) => {
+  if (html !== null) {
+    const $ = cheerio.load(html.data);
+    $('div._1mIbUg').each((i, ele) => {
 
-    let src = $(ele).find('img._3DIhEh').attr('src');
-    let link = $(ele).find('a._2a3TMW').attr('href');
-    if (src === undefined || src === "#" || src === '') {
-      return;
-    } else {
-      src = src.replace(src.substring(35, src.indexOf("image")), "/3376/560/");
-    }
-    if (link === undefined || link === '#' || link === '') {
-      console.log('LINK FAILED!')
-      return;
-    } else {
-      link = 'https://www.flipkart.com' + link;
-    }
-    if (i === 0) {
-      carouselInner += `<div class="carousel-item active yes-ads">
-                                  <a href = ${link} target = "_blank" rel="noopener noreferrer">
-                                  <img style="width:100%;height:280px" src=${src} alt="CarouselImage"/>
-                                  </a>
-                                </div>
-                                    `;
-    } else {
-      carouselInner += `<div class="carousel-item yes-ads">
-                                  <a href = ${link} target = "_blank" rel="noopener noreferrer">
-                                  <img style="width:100%;height:280px" src=${src} alt="CarouselImage"/>
-                                  </a>
-                                </div>
-                                    `;
-    }
+      let src = $(ele).find('img._3DIhEh').attr('src');
+      let link = $(ele).find('a._2a3TMW').attr('href');
+      if (src === undefined || src === "#" || src === '') {
+        return;
+      } else {
+        src = src.replace(src.substring(35, src.indexOf("image")), "/3376/560/");
+      }
+      if (link === undefined || link === '#' || link === '') {
+        console.log('LINK FAILED!')
+        return;
+      } else {
+        link = 'https://www.flipkart.com' + link;
+      }
+      if (i === 0) {
+        carouselInner += `<div class="carousel-item active yes-ads">
+                                    <a href = ${link} target = "_blank" rel="noopener noreferrer">
+                                    <img style="width:100%" src=${src} alt="CarouselImage"/>
+                                    </a>
+                                  </div>
+                                      `;
+      } else {
+        carouselInner += `<div class="carousel-item yes-ads">
+                                    <a href = ${link} target = "_blank" rel="noopener noreferrer">
+                                    <img style="width:100%" src=${src} alt="CarouselImage"/>
+                                    </a>
+                                  </div>
+                                      `;
+      }
 
-  });
+    });
+  }
   if (carouselInner === ``) {
     carouselInner = `
                         <div class = "carousel-item active no-ads">
                           <span class = "ad-span">GET THE BEST PRODUCTS EASY AND FAST FROM THIS APPLICATION</span>
                         </div>
                         <div class = "carousel-item no-ads">
-                          <span class = "ad-span">WE CURRENTLY RESEARCH THROUGH AMAZON, FLIPKART AND SNAPDEAL</span>
+                          <span class = "ad-span">WE CURRENTLY CRAWL THROUGH AMAZON, FLIPKART AND SNAPDEAL</span>
                         </div>
                       `;
   }
@@ -137,19 +143,32 @@ app.post('/getFirstPage', async (req, res) => {
       res.send(dat);
     }).catch(err => {
       console.log(err);
+      let dat = suitUp(null);
+      res.send(dat);
     });
 });
-
 
 function topFiveImageRetrieval(html) {
   if (html === undefined || html.data === undefined) {
     return 0;
   } else {
     const $ = cheerio.load(html.data);
-    return $('div.s-result-list div.s-result-item').first().find('a.a-link-normal img').attr('src');
+    let resultImage = "";
+    $('div.aok-relative').each((i, elem) => {
+      if ($(elem).find('img.s-image').length != 0) {
+        let src = $(elem).find('img.s-image').attr('src');
+        if (src) {
+          if (!src.startsWith("https")) {
+            src = "https" + src;
+          }
+          resultImage = src;
+          return false;
+        }
+      }
+    });
+    return resultImage;
   }
 }
-
 
 app.post('/initialFireup', async (req, res) => {
   let date = new Date();
@@ -195,10 +214,6 @@ app.post('/initialFireup', async (req, res) => {
     console.log(er);
   })
 });
-
-
-
-
 
 function fetchAmazon(html) {
   console.log('Cheerio is working on Amazon, Data is being Retrieved...');
@@ -246,6 +261,9 @@ function fetchAmazon(html) {
           imgSrc = '';
         } else {
           imgSrc = imgSrc.slice(imgSrc.indexOf('2.5x') + 6, imgSrc.indexOf('3x') - 1);
+          if (!imgSrc.startsWith("https")) {
+            imgSrc = "https" + imgSrc;
+          }
         }
         data.push({
           id: 'amazon' + i,

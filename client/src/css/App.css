@@ -70,12 +70,11 @@ body {
   margin-top: 7px;
   width: 99.5%;
   z-index: 0;
-  max-width: 1680px;
+  /* max-width: 1680px; */
 }
 
 .startContentCarousel {
   min-height: 100px;
-  max-width: 1680px;
 }
 
 .no-ads {
@@ -100,11 +99,6 @@ body {
   text-shadow: 1px 3px 2px rgba(0, 0, 0, 0.3);
 }
 
-.yes-ads {
-  height: 280px;
-  max-width: 1680px;
-}
-
 .ad-span {
   font-variant: small-caps;
 }
@@ -112,7 +106,6 @@ body {
 .staticStartPage {
   height: 500px;
   width: 100%;
-  max-width: 1680px;
   background-color: black;
 
   background: #000000;
@@ -178,12 +171,11 @@ body {
   font-weight: 600;
   margin: auto;
   margin-top: 10px;
-  max-width: 1680px;
 }
 
 .col-item-inner:hover {
   box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.11);
-  color: blue;
+  color: darkblue;
   cursor: pointer;
 }
 
@@ -195,6 +187,7 @@ body {
 
 .col-item-inner {
   bottom: 0;
+  border-radius: 10px;
   height: 100%;
   padding: 5% 0;
   transition: box-shadow 0.2s ease-in-out, color 0.2s;
@@ -228,7 +221,7 @@ body {
   font-size: 18px;
   margin-top: 10px;
   font-weight: bold;
-  font-variant: small-caps;
+  font-family: "Ubuntu", sans-serif;
 }
 
 .top5Content {
@@ -266,7 +259,6 @@ input::-webkit-calendar-picker-indicator {
   padding-left: 20px;
   text-align: center;
   color: white;
-  border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
   background-color: black;
   user-select: none;
@@ -293,9 +285,9 @@ input::-webkit-calendar-picker-indicator {
   margin-top: 10px;
   margin-bottom: 30px;
   text-align: center;
+  font-family: "Roboto", sans-serif;
   font-weight: 600;
   font-size: 13px;
-  font-variant: small-caps;
   user-select: none;
   cursor: default;
   letter-spacing: 2px;
@@ -562,7 +554,6 @@ h4 {
 }
 
 .visibleAbout {
-  right: 0;
   height: 0;
   font-family: "Rubik", sans-serif;
   position: fixed;
@@ -573,6 +564,7 @@ h4 {
   overflow: hidden;
   overflow-y: scroll;
   text-align: left;
+  width: 100%;
 }
 
 .visibleAbout::-webkit-scrollbar {
@@ -715,9 +707,10 @@ h4 {
 }
 
 .modalItemContentZoomCaution {
+  font-family: "Rubik", sans-serif;
   padding-top: 20px;
   font-size: 10px;
-  color: red;
+  color: orangered;
 }
 
 .modalItemContent::-webkit-scrollbar {
@@ -905,10 +898,8 @@ h4 {
   bottom: 0;
   display: flex;
   flex-flow: row;
-
   margin: 0 auto;
   min-width: 978px;
-  max-width: 1680px;
   padding: 8px;
 }
 
@@ -1026,10 +1017,8 @@ h4 {
 
 .leftResultMainHead {
   display: inline-block;
-  font-weight: 500 !important;
-  font-size: 20px;
-  text-transform: capitalize;
-  font-variant: small-caps;
+  font-weight: 600 !important;
+  font-size: 18px;
   font-family: "Roboto", Arial, sans-serif;
   color: #212121;
   line-height: 1.4;
@@ -1054,18 +1043,13 @@ h4 {
   border-top: 1px solid #f0f0f0;
   font-family: "Roboto", Arial, sans-serif;
   letter-spacing: 0;
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: bold;
   white-space: nowrap;
-  font-variant: small-caps;
 }
 
 .categoryIcon {
   margin-bottom: 3px;
-}
-
-.resultCountNumber {
-  font-size: 11px;
-  font-weight: 550;
 }
 
 .price {
@@ -1175,7 +1159,7 @@ h4 {
   cursor: pointer;
   color: gray;
   transition: color 0.2s;
-  font-family: "Roboto", sans-serif !important;
+  font-family: "Rubik", sans-serif !important;
   font-variant: small-caps;
 }
 
@@ -1200,14 +1184,10 @@ h4 {
 }
 
 .copyright {
-  font-variant: small-caps;
+  font-family: "Rubik", sans-serif;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   color: gray;
-}
-
-.footerYear {
-  font-size: 11px;
 }
 
 .feedback {
@@ -1397,9 +1377,7 @@ h4 {
   width: 100%;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
-  border-bottom: 1px solid #e0e0e0;
-  border-right: 1px solid #e0e0e0;
-  border-left: 1px solid #e0e0e0;
+  border-bottom: 7px solid orange;
   visibility: hidden;
   top: 45px;
   opacity: 0;
@@ -1407,7 +1385,7 @@ h4 {
   margin: 0 0;
   align-self: center;
   height: 500px;
-  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px 10px rgba(0, 0, 0, 0.4);
   transition: all 0.1s ease-out;
   transition-delay: 0.2s;
   overflow: hidden;
@@ -1432,14 +1410,13 @@ h4 {
 
 .dropItemHead {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   padding: 8px 0 8px 23px !important;
   border: 1px solid transparent;
   position: relative;
   width: 90%;
   margin: 0;
   cursor: pointer;
-  font-variant: small-caps;
 }
 
 .dropInBatch {
@@ -1480,7 +1457,7 @@ h4 {
 .downNav-inner2 {
   margin: 0 auto;
   padding: 0 !important;
-  max-width: 1248px;
+  max-width: 70%;
   display: flex;
   -webkit-justify-content: space-between;
   justify-content: space-between;
@@ -1532,12 +1509,7 @@ h4 {
   opacity: 0 !important;
 }
 
-.downNavDropdown:hover .dropHead {
-  color: darkblue;
-}
-
 .downNavDropdown:hover .down {
-  border: solid darkblue;
   border-width: 0 1px 1px 0;
   margin-bottom: -2px;
   transform: rotate(225deg);
@@ -1619,4 +1591,14 @@ h4 {
 
 .modalBody {
   overflow-x: hidden !important;
+}
+
+@media screen and (max-width: 600px) {
+  .downNav-inner2 {
+    max-width: 95%;
+  }
+  .modal-backdrop {
+    width: 100% !important;
+    height: 100% !important;
+  }
 }

@@ -4,8 +4,7 @@ import '../css/ResultV2.css';
 import noImg from '../images/noImg.jpg';
 import { FaTimesCircle } from "react-icons/fa";
 import { IoMdArrowDropupCircle, IoIosArrowForward } from "react-icons/io";
-import { FiSearch } from "react-icons/fi";
-import { TiArrowSortedUp } from "react-icons/ti";
+import { GoArrowSmallRight } from "react-icons/go";
 import { isMobile, getUA } from 'react-device-detect';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
@@ -121,7 +120,6 @@ class ProductSearchAutomation extends React.Component {
         prettify_separator: ",",
         values_separator: " to ",
         onFinish: data => {
-          console.dir(data.from, ' to ', data.to);
           this.updateResult();
         }
       });
@@ -355,7 +353,7 @@ class ProductSearchAutomation extends React.Component {
     this.setState({
       timeoutMsg: e
     }, () => {
-      document.getElementById('timeoutToast').style.display = "block";
+      document.getElementById('timeoutToast').style.display = "inline-block";
       setTimeout(() => {
         document.getElementById('timeoutToast').style.display = "none";
       }, 5000);
@@ -396,7 +394,7 @@ class ProductSearchAutomation extends React.Component {
         $('.largeImage').bind('click touchstart', () => {
           if (zoomCautionFlag === false) {
             zoomCautionFlag = true;
-            document.getElementById('modalItemContent').innerHTML += `<div class = "modalItemContentZoomCaution">Amazon and SnapDeal image dimensions are currently not fit for Zooming.<br/><b>Will be updated soon.</b></div>`;
+            document.getElementById('modalItemContent').innerHTML += `<div class = "modalItemContentZoomCaution">Amazon and SnapDeal images fetched are currently not fit for zooming.<br/><b>Will be updated soon.</b></div>`;
           }
         });
       });
@@ -439,22 +437,27 @@ class ProductSearchAutomation extends React.Component {
         if (index % 4 === 0 && index !== 1) {
           resultAdder += `<div class = "row resultRowV2">`;
         }
+        let img = log.imageSrc;
+        let ratingCount = log.ratingCount;
+        if (ratingCount)
+          ratingCount = parseInt(ratingCount);
+        else
+          ratingCount = 0;
         resultAdder +=
           `<div class = "col resultColV2 resultBlock" name = ${index}>
                           <div class = "rankTagV2" name = ${index} title = "RANK ${index + 1}">${index + 1}</div>
                             <div class = "test resultImage" id = ${log.id} name = ${index}>
                               <div class = "imV2" name = ${index} title = "${log.title}">
-                                  <img src = ${log.imageSrc || noImg} alt = "Product Image" name = ${index} class = "productImageV2">
+                                  <img src = ${(img) ? img : noImg} alt = "Product Image" name = ${index} class = "productImageV2">
                               </div>
                             </div>
                               <div class = "contenV2" name = ${index}>
                                   <div class = "websiteNameV2" name = ${index}>${log.website}</div>
                                   <div title = "${log.title}" name = ${index} class = "elip resultTitle" id = "${log.id}secondary">${log.name}</div>
                                   <span class = "priceV2" name = ${index}>&#8377; ${log.price}</span>
-                                  <p class = "n-ratingsV2" name = ${index}><b class = "ratingV2" name = ${index}>${log.rating}&#9733;</b> (${log.ratingCount} Ratings)</p>
-                                  <div class = "goToWebsiteV2" name = ${index}><a href = ${log.link} name = ${index} title = "Open in their website" target = "_blank" class="btn btn-secondary goToWebsiteV2Button">Open in Website</a></div>
+                                  <p class = "n-ratingsV2" name = ${index}><b class = "ratingV2" name = ${index}>${log.rating}&#9733;</b> (${(ratingCount).toLocaleString()} Ratings)</p>
+                                  <div class = "goToWebsiteV2" name = ${index}><a href = ${log.link} name = ${index} title = "Open this product in ${log.website}" target = "_blank" class="btn btn-secondary goToWebsiteV2Button">Open in ${log.website}</a></div>
                               </div>
-
                         </div>
                         `;
 
@@ -502,11 +505,11 @@ class ProductSearchAutomation extends React.Component {
         let timeFlag60 = false;
         let timeInterval = setInterval(() => {
           if (this.state.timeCounter > 35 && timeFlag === false) {
-            this.timeoutMsgTrigger('SLOW INTERNET CONNECTION DETECTED ! ');
+            this.timeoutMsgTrigger('Please check your network connection. ');
             timeFlag = true;
           }
           if (this.state.timeCounter > 60 && timeFlag60 === false) {
-            this.timeoutMsgTrigger('PLEASE RELOAD AND TRY AGAIN ! ');
+            this.timeoutMsgTrigger('Please reload and try again. ');
             timeFlag60 = true;
           }
           this.setState({ timeCounter: this.state.timeCounter + 1 });
@@ -517,7 +520,7 @@ class ProductSearchAutomation extends React.Component {
         if (isMobile) {
           document.getElementById('res').style.minHeight = "1700px";
         } else {
-          document.getElementById('res').style.minHeight = "700px";
+          document.getElementById('res').style.minHeight = "100vh";
         }
         document.getElementById('result').innerHTML = "";
         document.getElementById('result').style.visibility = "hidden";
@@ -701,16 +704,15 @@ class ProductSearchAutomation extends React.Component {
 
             {/*Calling analyse function on submitting the form*/}
             <form id="textForm" className="textForm" onSubmit={this.analyse}>
-              <input type="text" name="searchTerm" list="searchSuggestions" value={this.state.searchTerm} onChange={this.handleSearchTerm} placeholder="Search for products" className="nameInput" id="nameInput" spellCheck="false" title="Enter the product name that you want to research about" autoComplete="off" required />
+              <input type="text" name="searchTerm" list="searchSuggestions" value={this.state.searchTerm} onChange={this.handleSearchTerm} placeholder="Search for products" className="nameInput" id="nameInput" spellCheck="false" title="Enter the product name that you want to search" autoComplete="off" required />
               <datalist id="searchSuggestions">
-
               </datalist>
             </form>
 
             {/*Linking the button to the form*/}
             <button form="textForm" type="submit" className="submitButton" id="submitButton">
               {/*Arrow icon in the button*/}
-              <FiSearch className="icon" id="icon" />
+              <GoArrowSmallRight className="icon" id="icon" />
             </button>
           </div>
 
@@ -737,11 +739,11 @@ class ProductSearchAutomation extends React.Component {
                       <div className="dropItem" onClick={() => this.handleDropdownClick('Vivo', 'dropOut1')}><div>Vivo</div></div>
                       <div className="dropItem" onClick={() => this.handleDropdownClick('Honor', 'dropOut1')}><div>Honor</div></div>
                       <div className="dropItem" onClick={() => this.handleDropdownClick('Asus phones', 'dropOut1')}><div>Asus</div></div>
-                      <div className="dropItem" onClick={() => this.handleDropdownClick('iPhone 11 pro max', 'dropOut1')}><div>iPhone 11 Pro max</div></div>
-                      <div className="dropItem" onClick={() => this.handleDropdownClick('Oneplus 7T pro', 'dropOut1')}><div>OnePlus 7T pro</div></div>
-                      <div className="dropItem" onClick={() => this.handleDropdownClick('Asus ROG 2', 'dropOut1')}><div>Asus ROG II</div></div>
-                      <div className="dropItem" onClick={() => this.handleDropdownClick('Samsung S20 ultra', 'dropOut1')}><div>Samsung S20 Ultra</div></div>
-                      <div className="dropItem" onClick={() => this.handleDropdownClick('Redmi 8A', 'dropOut1')}><div>Redmi 8A</div></div>
+                      <div className="dropItem" onClick={() => this.handleDropdownClick('iPhone 12 pro max', 'dropOut1')}><div>iPhone 12 Pro max</div></div>
+                      <div className="dropItem" onClick={() => this.handleDropdownClick('Oneplus 9 pro', 'dropOut1')}><div>OnePlus 9 pro</div></div>
+                      <div className="dropItem" onClick={() => this.handleDropdownClick('Asus ROG 5', 'dropOut1')}><div>Asus ROG 5</div></div>
+                      <div className="dropItem" onClick={() => this.handleDropdownClick('Samsung S21 ultra', 'dropOut1')}><div>Samsung S21 Ultra</div></div>
+                      <div className="dropItem" onClick={() => this.handleDropdownClick('Redmi Note 10', 'dropOut1')}><div>Redmi Note 10</div></div>
                     </div>
                     <div className="dropInBatch dropInColorDark">
                       <div className="dropItemHead" onClick={() => this.handleDropdownClick('Smartphone accessories', 'dropOut1')}><div>Mobile Accessories</div></div>
@@ -795,10 +797,10 @@ class ProductSearchAutomation extends React.Component {
                     <div className="dropInBatch">
                       <div className="dropItemHead" onClick={() => this.handleDropdownClick('Smart home automation', 'dropOut1')}><div>Smart Home Automation</div></div>
                       <div className="dropItem" onClick={() => this.handleDropdownClick('Amazon echo', 'dropOut1')}><div>Amazon Echo</div></div>
+                      <div className="dropItem" onClick={() => this.handleDropdownClick('Google nest', 'dropOut1')}><div>Google Nest</div></div>
                       <div className="dropItem" onClick={() => this.handleDropdownClick('Google home', 'dropOut1')}><div>Google Home</div></div>
-                      <div className="dropItem" onClick={() => this.handleDropdownClick('Sonos', 'dropOut1')}><div>Sonos One</div></div>
                       <div className="dropItem" onClick={() => this.handleDropdownClick('Apple Homepod', 'dropOut1')}><div>Apple HomePod</div></div>
-                      <div className="dropItem" onClick={() => this.handleDropdownClick('JBL Link 20', 'dropOut1')}><div>JBL Link 20</div></div>
+                      <div className="dropItem" onClick={() => this.handleDropdownClick('JBL', 'dropOut1')}><div>JBL</div></div>
                       <div className="dropItemHead" onClick={() => this.handleDropdownClick('Camera accesories', 'dropOut1')}><div>Camera & Accessories</div></div>
                       <div className="dropItem" onClick={() => this.handleDropdownClick('DSLR', 'dropOut1')}><div>DSLR</div></div>
                       <div className="dropItem" onClick={() => this.handleDropdownClick('Compact cameras', 'dropOut1')}><div>Compact Cameras</div></div>
@@ -814,7 +816,7 @@ class ProductSearchAutomation extends React.Component {
 
               <div className="downNavDropdown drop2">
                 <span className="dropHead">
-                  tvs & appliances
+                  tv & appliances
                   <i className="down"></i>
                 </span>
                 <div className="dropOut drop2Out" id="dropOut2">
@@ -1400,7 +1402,7 @@ class ProductSearchAutomation extends React.Component {
           </div>
 
           <div className="top5Div">
-            <h3 className="top5Heading">top searches</h3>
+            <h3 className="top5Heading">Top Searches</h3>
             <hr />
             <div>
               <div id="top5Content" className="row top5Content">
@@ -1418,7 +1420,7 @@ class ProductSearchAutomation extends React.Component {
 
         <div id="head" className="head">
 
-          <h1 className='jettext' title="Applies only for good internet connection">this will take some time(approx 35 sec). please be patient.  <u className="timeCounter">{this.state.timeCounter}sec</u></h1>
+          <h1 className='jettext' title="Applies only for good internet connection">This will take some time (Approx 15 sec).  <u className="timeCounter">{this.state.timeCounter}sec</u></h1>
 
           <BarLoader
             css={override}
@@ -1450,7 +1452,7 @@ class ProductSearchAutomation extends React.Component {
         <div className="res" id="res">
 
           <div className="leftResult" id="leftResult">
-            <div className="leftResultMainHead">Filters</div>
+            <div className="leftResultMainHead">FILTERS</div>
             <section className="leftResultSection">
               <div className="leftResultHead">CATEGORY</div>
               <div className="leftResultText category" id="category"><IoIosArrowForward className="categoryIcon" /> {this.state.category}</div>
@@ -1492,7 +1494,7 @@ class ProductSearchAutomation extends React.Component {
                 </div>
               </div>
             </section>
-            <div className="resultCount" id="resultCount"><span className="resultCountNumber">{this.state.resultCount}</span> TOTAL RESULTS</div>
+            <div className="resultCount" id="resultCount">{this.state.resultCount} TOTAL RESULTS</div>
 
           </div>
 
@@ -1503,7 +1505,7 @@ class ProductSearchAutomation extends React.Component {
         <footer id="footer" className="footer">
           <div className="footerTitleAndTop">
             <div className="footerLogo"><span className="footerLogoText" onClick={() => this.reloading()}>PSA</span></div>
-            <div className="footerToTop"><span className="footerText" onClick={() => window.scroll({ top: 0, left: 0, behavior: 'smooth' })}>Return to top <TiArrowSortedUp /></span></div>
+            {/* <div className="footerToTop"><span className="footerText" onClick={() => window.scroll({ top: 0, left: 0, behavior: 'smooth' })}>Return to top <TiArrowSortedUp /></span></div> */}
           </div>
           <div className="footerMiddle">
             <div className="footerCentered"><span className="footerText" id="report" onClick={() => this.reportToggle()}>REPORT</span></div>
@@ -1534,7 +1536,7 @@ class ProductSearchAutomation extends React.Component {
             </form>
 
           </div>
-          <div className="copyright" id="copyright"><span className="footerYear">&copy; 2020</span>, PRODUCT SEARCH AUTOMATION</div>
+          <div className="copyright" id="copyright"><span className="footerYear">&copy; 2021</span>, PRODUCT SEARCH AUTOMATION</div>
         </footer>
 
       </div>
