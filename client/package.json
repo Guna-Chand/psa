@@ -17,9 +17,10 @@
     "jquery-zoom": "^1.7.21",
     "react": "^16.14.0",
     "react-bootstrap": "^1.6.3",
+    "react-burger-menu": "^3.0.6",
     "react-device-detect": "^1.17.0",
     "react-dom": "^16.14.0",
-    "react-icons": "^3.11.0",
+    "react-icons": "^4.3.1",
     "react-scripts": "^4.0.3",
     "react-spinners": "^0.8.3",
     "typescript": "^3.9.10"

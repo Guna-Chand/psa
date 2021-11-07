@@ -6,6 +6,25 @@ body {
   margin: 0;
 }
 
+body::-webkit-scrollbar {
+  width: 11px;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: silver #000000;
+}
+
+body::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: silver;
+  border-radius: 6px;
+  border: 3px solid #000000;
+}
+
 .errorBody {
   font-family: "Exo", cursive;
   text-align: center;
@@ -103,7 +122,7 @@ body {
   font-variant: small-caps;
 }
 
-.staticStartPage {
+.staticStartPage, .staticStartPageSteps {
   height: 500px;
   width: 100%;
   background-color: black;
@@ -117,12 +136,42 @@ body {
   padding: 30px;
 }
 
+.staticStartPageSteps {
+  background: linear-gradient(to top, #434343, #000000);
+  margin-bottom: 5px;
+  position: relative;
+  height: 500px;
+  padding: 0;
+}
+
+.wave2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
 .staticPageBackground {
   height: 100%;
   background-image: url("../images/addImg.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: right;
+}
+
+.staticPageFiller {
+  height: 100%;
+  background-image: url("../images/addImg2.png");
+  background-repeat: no-repeat;
+  background-size: 45%;
+  background-position: right;
+}
+
+.fillerOverlay {
+  height: 100%;
+  background: linear-gradient( to right, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.3));
 }
 
 .staticPageBackgroundOpacity {
@@ -135,7 +184,7 @@ body {
   );
 }
 
-.staticStartPageText {
+.staticStartPageText, .staticFillerText {
   height: 100%;
   padding: 7% 0;
   padding-left: 4%;
@@ -146,7 +195,7 @@ body {
   cursor: default;
 }
 
-.staticStartPageTextTop {
+.staticStartPageTextTop, .fillerItem {
   font-weight: 700;
   font-size: 3.76471rem;
   line-height: 1.2;
@@ -222,6 +271,11 @@ body {
   margin-top: 10px;
   font-weight: bold;
   font-family: "Ubuntu", sans-serif;
+}
+
+.top5ContentParent{
+  display: flex;
+  justify-content: center;
 }
 
 .top5Content {
@@ -577,7 +631,7 @@ h4 {
   background-repeat: no-repeat;
   background-position: right;
   background-size: contain;
-  height: 400px;
+  height: 500px;
   margin-right: 5%;
   margin-bottom: 150px;
 }
@@ -618,9 +672,20 @@ h4 {
   border-radius: 3px;
 }
 
-.aboutArrowIcon {
+.aboutArrowIcon, .arrowFiller {
   margin-bottom: 2px;
   color: silver;
+}
+
+.staticFillerText {
+  height: 80%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
+
+.fillerItem {
+  margin-left: 80px;
 }
 
 .aboutTotalVisits {
@@ -896,7 +961,7 @@ h4 {
   min-height: 200px;
   left: 0;
   bottom: 0;
-  display: flex;
+  display: none;
   flex-flow: row;
   margin: 0 auto;
   min-width: 978px;
@@ -1290,11 +1355,6 @@ h4 {
   background-color: rgba(69, 69, 69, 1);
 }
 
-::selection {
-  background-color: silver;
-  color: white;
-}
-
 .submitButton {
   transition: all 0.2s;
   float: right;
@@ -1377,7 +1437,7 @@ h4 {
   width: 100%;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
-  border-bottom: 7px solid orange;
+  border-bottom: 7px solid coral;
   visibility: hidden;
   top: 45px;
   opacity: 0;
@@ -1411,6 +1471,7 @@ h4 {
 .dropItemHead {
   font-weight: 600;
   font-size: 14px;
+  color: orangered;
   padding: 8px 0 8px 23px !important;
   border: 1px solid transparent;
   position: relative;
@@ -1544,7 +1605,7 @@ h4 {
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 16px 16px;
   text-decoration: none;
   font-size: 20px;
   font-family: "Ubuntu", sans-serif;
@@ -1556,13 +1617,13 @@ h4 {
 
 .topnav div.about {
   border-radius: 2px;
-  font-family: "Roboto", sans-serif;
+  font-family: "Rubik", sans-serif;
   transition: color 0.3s;
   border-color: rgb(201, 228, 59);
-  font-variant: small-caps;
+  font-weight: 600;
+  font-size: 18px;
   float: right !important;
   width: 150px;
-  margin-right: 5px;
   background-color: transparent !important;
   color: gray;
 }
@@ -1591,6 +1652,21 @@ h4 {
 
 .modalBody {
   overflow-x: hidden !important;
+}
+
+.flipkartBanner{
+  position: absolute;
+  font-size: 12px;
+  background-color: #f1f3f6;
+  padding: 8px 10px;
+  font-family: "Rubik", sans-serif;
+  border-radius: 0 0 7px 0;
+  box-shadow: 2px 2px 8px 2px rgba(0, 0, 0, 0.7);
+  border: solid .1px rgba(0, 0, 0, 0.1);
+}
+
+.fromFlipkartImage{
+  height: 16px;
 }
 
 @media screen and (max-width: 600px) {

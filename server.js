@@ -107,18 +107,20 @@ function suitUp(html) {
       }
       if (i === 0) {
         carouselInner += `<div class="carousel-item active yes-ads">
-                                    <a href = ${link} target = "_blank" rel="noopener noreferrer">
-                                    <img style="width:100%" src=${src} alt="CarouselImage"/>
-                                    </a>
-                                  </div>
-                                      `;
+                            <span class="flipkartBanner"><img alt="Flipkart" class="fromFlipkartImage"></span>
+                            <a href = ${link} target = "_blank" rel="noopener noreferrer">
+                            <img style="width:100%" src=${src} alt="CarouselImage"/>
+                            </a>
+                          </div>
+                          `;
       } else {
         carouselInner += `<div class="carousel-item yes-ads">
-                                    <a href = ${link} target = "_blank" rel="noopener noreferrer">
-                                    <img style="width:100%" src=${src} alt="CarouselImage"/>
-                                    </a>
-                                  </div>
-                                      `;
+                            <span class="flipkartBanner"><img alt="Flipkart" class="fromFlipkartImage"></span>
+                            <a href = ${link} target = "_blank" rel="noopener noreferrer">
+                            <img style="width:100%" src=${src} alt="CarouselImage"/>
+                            </a>
+                          </div>
+                          `;
       }
 
     });
