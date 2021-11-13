@@ -248,13 +248,12 @@ function fetchAmazon(html) {
         }
         let name = $(elem).find('span.a-text-normal').first().text();
 
-        let ratingCount = '';
-        ratingCount = $(elem).find('a.a-link-normal span.a-size-base').first().text();
+        let ratingCount = $(elem).find('a.a-link-normal span.a-size-base').first().text();
         if (ratingCount === '' || ratingCount === undefined) {
-          ratingCount = '0';
+          ratingCount = 0;
           return;
         } else {
-          ratingCount = ratingCount.split(',').join('');
+          ratingCount = parseInt(ratingCount.split(',').join(''));
         }
 
         price = price.replace(/\./g, '');
@@ -315,10 +314,10 @@ function deepFlipkart(html) {
   }
   let ratingCount = $(' div._16VRIQ span._2_R_DZ span').children().first().text();
   if (ratingCount === '' || ratingCount === undefined) {
-    ratingCount = '0';
+    ratingCount = 0;
     return false;
   } else {
-    ratingCount = ratingCount.slice(0, ratingCount.indexOf("ating") - 2).split(',').join('');
+    ratingCount = parseInt(ratingCount.slice(0, ratingCount.indexOf("ating") - 2).split(',').join(''));
   }
   let img = [];
   $('div.q6DClP').each((i, el) => {
@@ -423,6 +422,10 @@ function fetchSnapDeal(html) {
       if (imageSrc === undefined || imageSrc === '') {
         imageSrc = $(elem).find('picture.picture-elem img').attr('src');
       }
+
+      if (imageSrc)
+        imageSrc = imageSrc.replace("/large", '');
+
       let name = $(elem).find('p.product-title').text();
 
       let price = $(elem).find('span.product-price').first().text();
@@ -440,7 +443,7 @@ function fetchSnapDeal(html) {
       if (ratingCount === '' || ratingCount === undefined) {
         ratingCount = 0;
       } else {
-        ratingCount = ratingCount.slice(1, -1);
+        ratingCount = parseInt(ratingCount.slice(1, -1));
       }
 
       data.push({

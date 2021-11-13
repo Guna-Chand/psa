@@ -222,6 +222,10 @@ body::-webkit-scrollbar-thumb {
   margin-top: 10px;
 }
 
+.top5Div hr {
+  margin: 7px;
+}
+
 .col-item-inner:hover {
   box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.11);
   color: darkblue;
@@ -308,7 +312,7 @@ input::-webkit-calendar-picker-indicator {
   font-size: 15px;
   z-index: 15;
   top: 60px;
-  left: 39%;
+  /* left: 39%; */
   padding: 5px 10px;
   padding-left: 20px;
   text-align: center;
@@ -724,8 +728,8 @@ h4 {
   color: rgba(128, 128, 128, 0.6);
   font-size: 45px;
   transition: 0.5s;
+  margin: 0 auto;
   margin-top: 100px;
-  margin-left: 49%;
   width: 50px;
 }
 
@@ -743,11 +747,14 @@ h4 {
   display: flex;
   flex-flow: column;
   flex: 0 0 70px;
-  max-height: 440px;
+  max-height: 442px;
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  outline: 1px solid #e0e0e0;
+  outline: 0px;
+  border-top: .5px solid rgba(0, 0, 0, 0.5);
+  border-bottom: .5px solid rgba(0, 0, 0, 0.5);
+  border-left: .5px solid rgba(0, 0, 0, 0.5);
 }
 
 .modalSmallImages::-webkit-scrollbar {
@@ -758,7 +765,8 @@ h4 {
   display: flex;
   flex-flow: column;
   padding: 10px;
-  outline: 1px solid #e0e0e0;
+  outline: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .modalItemContent {
@@ -783,9 +791,12 @@ h4 {
 }
 
 .smallImage {
-  width: 70px;
-  height: 70px;
-  outline: 1px solid #e0e0e0;
+  min-height: 70px;
+  max-height: 70px;
+  min-width: 70px;
+  max-width: 70px;
+  outline: 0px;
+  border-bottom: .5px solid rgba(0, 0, 0, 0.5);
   cursor: pointer;
   padding: 3px;
   text-align: center;
@@ -1054,6 +1065,14 @@ h4 {
   top: 100 !important;
 }
 
+.leftResultMainContent {
+  overflow: hidden;
+}
+
+.filterDropdownArrow {
+  font-size: 23px;
+}
+
 .category {
   line-height: 1.4;
   overflow: hidden;
@@ -1085,12 +1104,14 @@ h4 {
   font-weight: 600 !important;
   font-size: 18px;
   font-family: "Roboto", Arial, sans-serif;
-  color: #212121;
+  color: white;
   line-height: 1.4;
   display: flex;
   padding: 16px;
   justify-content: space-between;
   border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  background: linear-gradient(90deg,#7d7d7d,rgba(0, 0, 0, 0.7));
 }
 
 .irs-handle,
@@ -1364,7 +1385,7 @@ h4 {
   border-bottom: 1px solid gray;
   text-align: center;
   outline: 0;
-  font-size: 15pt;
+  font-size: 12pt;
   height: 42px;
 }
 
@@ -1381,7 +1402,7 @@ h4 {
 
 .icon {
   color: gray;
-  font-size: 25pt;
+  font-size: 20pt;
   font-weight: bold;
   padding-top: 3px;
   transition: color 0.2s;
@@ -1669,12 +1690,45 @@ h4 {
   height: 16px;
 }
 
-@media screen and (max-width: 600px) {
-  .downNav-inner2 {
-    max-width: 95%;
-  }
-  .modal-backdrop {
-    width: 100% !important;
-    height: 100% !important;
-  }
+.modalCloseButton {
+  text-align: right;
+  font-size: 30px !important;
+  width: 30px;
+  margin-right: 3px !important;
+  padding-right: 3px !important;
+  padding-top: -6px !important;
+}
+
+.modalBody {
+  padding-top: 0px !important;
+}
+
+.appliedFilterCount {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  padding: 0 25px 0 0;
+}
+
+.clearAllButton {
+  font-size: 9px !important;
+  letter-spacing: 1px;
+  font-weight: 600 !important;
+  background: white;
+  color: #000;
+  border-color: silver !important;
+  right: 0;
+}
+
+.clearAllButton:hover {
+  border-color: gray !important;
+}
+
+.leftResultClearAll {
+  text-align: center;
+}
+
+.clearFilterSection {
+  font-family: 'Rubik', sans-serif;
+  padding: 8px 16px;
 }

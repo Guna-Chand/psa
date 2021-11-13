@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import '../css/App.css';
 import '../css/AppMobile.css';
@@ -7,22 +6,28 @@ import '../css/Sidebar.css';
 import noImg from '../images/noImg.jpg';
 import fromFlipkart from '../images/fromFlipkart.png';
 import { FaTimesCircle } from "react-icons/fa";
-import { IoMdArrowDropupCircle, IoIosArrowForward } from "react-icons/io";
-import { GoArrowSmallRight } from "react-icons/go";
+import { IoMdArrowDropupCircle, IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
+import { IoSearchSharp } from "react-icons/io5";
 import { isMobile, getUA } from 'react-device-detect';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Modal, OverlayTrigger, Popover, CloseButton } from 'react-bootstrap';
 import { HashLoader, BarLoader } from 'react-spinners';
 import $ from 'jquery';
 import { css } from '@emotion/core';
 import Category from './components/Category';
-// import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar';
 
 const axios = require('axios');
 
 const override = css`
   display: block;
   margin: 0 auto;
+  border-color: red;
+`;
+
+const mobileOverride = css`
+  display: block;
+  margin: 10px auto;
   border-color: red;
 `;
 
@@ -33,7 +38,7 @@ var globalCurrentSearchTermFlag = '';
 var globalCurrentSearchTermStable = '';
 //globalPriceUpdateFlag is to keep track if the price slider is moved or not just not to do unneccessary price sorting
 var globalPriceUpdateFlag = false;
-var zoomCautionFlag = false;
+// var zoomCautionFlag = false;
 
 var globalTopFive = [];
 
@@ -74,7 +79,13 @@ class ProductSearchAutomation extends React.Component {
 
       reportContent: '',
 
-      searchTerm: ''
+      searchTerm: '',
+
+      menuOpen: false,
+
+      filterIsOpen: true,
+
+      appliedFilterCount: 0
     };
     this.handleSearchTerm = this.handleSearchTerm.bind(this);
     this.reloading = this.reloading.bind(this);
@@ -83,6 +94,7 @@ class ProductSearchAutomation extends React.Component {
     this.timeoutMsgTrigger = this.timeoutMsgTrigger.bind(this);
     this.setSearchSuggestions = this.setSearchSuggestions.bind(this);
     this.handleDropdownClick = this.handleDropdownClick.bind(this);
+    // this.sidebarSwitch = this.sidebarSwitch.bind(this);
   }
 
   componentDidMount() {
@@ -96,6 +108,7 @@ class ProductSearchAutomation extends React.Component {
       document.getElementById('aboutBackground').style.marginRight = "0";
       document.getElementById('aboutText').style.paddingTop = "0";
       document.getElementById('aboutCloseButton').style.marginTop = "600px";
+      this.handleFiltersDropdown();
     }
 
     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
@@ -132,6 +145,12 @@ class ProductSearchAutomation extends React.Component {
     } catch (err) {
       console.log(err);
     }
+
+    $('.ratingCheckbox').on('change', ({ currentTarget }) => {
+      $('.ratingCheckbox').not(currentTarget).prop('checked', false);
+      this.updateResult();
+    });
+
     axios.post('/getVisitCount')
       .then(res => {
         if (res.data !== 'Retrieving...') {
@@ -163,6 +182,7 @@ class ProductSearchAutomation extends React.Component {
   handleSearchTerm = e => {
     if (e.target !== undefined) {
       e = e.target.value;
+      document.getElementById("res").style.display = isMobile ? 'block' : 'flex';
     } else if (globalCurrentSearchTermFlag !== '') {
       return;
     }
@@ -199,7 +219,6 @@ class ProductSearchAutomation extends React.Component {
                                                                   <span class="sr-only">Next</span>
                                                                 </a>`;
     let elements = Array.from(document.getElementsByClassName('fromFlipkartImage'));
-    console.log(elements);
     elements.forEach(ele => ele.src = fromFlipkart);
   }
 
@@ -242,6 +261,7 @@ class ProductSearchAutomation extends React.Component {
     let priceVals = window.$("#sliderId").data("ionRangeSlider");
     let websiteChecked = [];
     let ratingChecked = 0;
+    let appliedFilterCount = 0;
     if (priceVals.result.min === priceVals.result.from && priceVals.result.max === priceVals.result.to && globalPriceUpdateFlag === false) {
       data = fixedData;
     } else {
@@ -250,6 +270,7 @@ class ProductSearchAutomation extends React.Component {
         globalPriceUpdateFlag = false;
       } else {
         globalPriceUpdateFlag = true;
+        appliedFilterCount += 1;
         this.updateResultByPrice(priceVals.result.from, priceVals.result.to);
       }
     }
@@ -261,6 +282,7 @@ class ProductSearchAutomation extends React.Component {
     });
 
     if (websiteChecked.length !== 0) {
+      appliedFilterCount += websiteChecked.length;
       this.updateResultByWebsite(websiteChecked);
     }
 
@@ -269,10 +291,32 @@ class ProductSearchAutomation extends React.Component {
     });
 
     if (ratingChecked !== 0) {
+      appliedFilterCount += 1;
       this.updateResultByRating(ratingChecked);
     }
 
+    this.setState({ appliedFilterCount: appliedFilterCount });
+
     this.resultInterfaceUpdate();
+  }
+
+  clearFilters() {
+    let priceVals = window.$("#sliderId").data("ionRangeSlider");
+    window.$("#sliderId").data("ionRangeSlider").update({
+      from: 0,
+      max: priceVals.result.max,
+      to: priceVals.result.max
+    });
+
+    $(".websiteCheckbox").each(function () {
+      this.checked = false;
+    });
+
+    $(".ratingCheckbox").each(function () {
+      this.checked = false;
+    });
+
+    this.updateResult();
   }
 
   updateResultByRating(ratingLocal) {
@@ -378,7 +422,7 @@ class ProductSearchAutomation extends React.Component {
   resultBlockClick = e => {
     let idLocal = e;
     let smallImagesAdder = ``;
-    zoomCautionFlag = false;
+    // zoomCautionFlag = false;
     if (idLocal.includes('secondary')) {
       idLocal = idLocal.replace('secondary', '');
     }
@@ -392,7 +436,7 @@ class ProductSearchAutomation extends React.Component {
                                 <div class = "modalItemWebsite">${obj.website}</div>
                                 <div class = "modalItemTitle"><a href = ${obj.link} target = "_blank">${obj.name}</a></div>
                                 <div class = "modalItemPrice">&#8377; ${obj.price}</div>
-                                <div class = "modalItemRating"><span class = "modalItemRatingValue">${obj.rating}&#9733;</span> <span class = "modalItemRatingCount">(${obj.ratingCount} ratings)</span></div>
+                                <div class = "modalItemRating"><span class = "modalItemRatingValue">${obj.rating}&#9733;</span> <span class = "modalItemRatingCount">(${(obj.ratingCount).toLocaleString()} ratings)</span></div>
                               </div>`;
 
       this.setState({ showResultModal: true }, () => {
@@ -400,12 +444,12 @@ class ProductSearchAutomation extends React.Component {
         document.getElementById('modalLargeImages').innerHTML = largeImagesAdder;
         document.getElementById('modalItemContent').innerHTML = itemContentAdder;
         window.$('.largeImage').zoom({ on: 'click' });
-        $('.largeImage').bind('click touchstart', () => {
-          if (zoomCautionFlag === false) {
-            zoomCautionFlag = true;
-            document.getElementById('modalItemContent').innerHTML += `<div class = "modalItemContentZoomCaution">Amazon and SnapDeal images fetched are currently not fit for zooming.<br/><b>Will be updated soon.</b></div>`;
-          }
-        });
+        // $('.largeImage').bind('click touchstart', () => {
+        //   if (zoomCautionFlag === false) {
+        //     zoomCautionFlag = true;
+        //     document.getElementById('modalItemContent').innerHTML += `<div class = "modalItemContentZoomCaution">Amazon and SnapDeal images fetched are currently not fit for zooming.<br/><b>Will be updated soon.</b></div>`;
+        //   }
+        // });
       });
     } else {
       let largeImagesAdder = `<div class = "largeImage"><span class="largeImagehelper"></span><img class = "largeImageTag" src = ${obj.imageSrc.replace(/\/416/g, '/1664') || noImg} alt = "NULL"/></div>`;
@@ -418,7 +462,7 @@ class ProductSearchAutomation extends React.Component {
                                 <div class = "modalItemWebsite">${obj.website}</div>
                                 <div class = "modalItemTitle"><a href = ${obj.link} target = "_blank">${obj.name}</a></div>
                                 <div class = "modalItemPrice">&#8377; ${obj.price}</div>
-                                <div class = "modalItemRating"><span class = "modalItemRatingValue">${obj.rating}&#9733;</span> <span class = "modalItemRatingCount">(${obj.ratingCount} ratings)</span></div>
+                                <div class = "modalItemRating"><span class = "modalItemRatingValue">${obj.rating}&#9733;</span> <span class = "modalItemRatingCount">(${(obj.ratingCount).toLocaleString()} ratings)</span></div>
                               </div>`;
 
       this.setState({ showResultModal: true }, () => {
@@ -441,17 +485,13 @@ class ProductSearchAutomation extends React.Component {
     if (data.length !== 0) {
 
       this.rank();
+      let divider = isMobile ? 2 : 4;
 
       data.forEach((log, index) => {
-        if (index % 4 === 0 && index !== 1) {
+        if (index % divider === 0 && index !== 1) {
           resultAdder += `<div class = "row resultRowV2">`;
         }
         let img = log.imageSrc;
-        let ratingCount = log.ratingCount;
-        if (ratingCount)
-          ratingCount = parseInt(ratingCount);
-        else
-          ratingCount = 0;
         resultAdder +=
           `<div class = "col resultColV2 resultBlock" name = ${index}>
                           <div class = "rankTagV2" name = ${index} title = "RANK ${index + 1}">${index + 1}</div>
@@ -464,13 +504,13 @@ class ProductSearchAutomation extends React.Component {
                                   <div class = "websiteNameV2" name = ${index}>${log.website}</div>
                                   <div title = "${log.title}" name = ${index} class = "elip resultTitle" id = "${log.id}secondary">${log.name}</div>
                                   <span class = "priceV2" name = ${index}>&#8377; ${log.price}</span>
-                                  <p class = "n-ratingsV2" name = ${index}><b class = "ratingV2" name = ${index}>${log.rating}&#9733;</b> (${(ratingCount).toLocaleString()} Ratings)</p>
+                                  <p class = "n-ratingsV2" name = ${index}><b class = "ratingV2" name = ${index}>${log.rating}&#9733;</b> (${(log.ratingCount).toLocaleString()} Ratings)</p>
                                   <div class = "goToWebsiteV2" name = ${index}><a href = ${log.link} name = ${index} title = "Open this product in ${log.website}" target = "_blank" class="btn btn-secondary goToWebsiteV2Button">Open in ${log.website}</a></div>
                               </div>
                         </div>
                         `;
 
-        if (index + 1 !== 1 && index + 1 % 4 === 0) {
+        if (index + 1 !== 1 && index + 1 % divider === 0) {
           resultAdder += `</div>`;
         }
       });
@@ -508,6 +548,7 @@ class ProductSearchAutomation extends React.Component {
         alert("Empty Spaces are not accepted!");
       }
       else {
+        document.getElementById("res").style.display = isMobile ? 'block' : 'flex';
         globalCurrentSearchTermFlag = searchTermMain;
         globalCurrentSearchTermStable = searchTermMain;
         let timeFlag = false;
@@ -523,7 +564,8 @@ class ProductSearchAutomation extends React.Component {
           }
           this.setState({ timeCounter: this.state.timeCounter + 1 });
         }, 1000);
-        this.setState({ head: 'approx 40 different pages' });
+        
+        this.setState({ head: 'approx 40 different pages', appliedFilterCount: 0 });
 
         data = [];
         if (isMobile) {
@@ -667,19 +709,22 @@ class ProductSearchAutomation extends React.Component {
   }
 
   aboutExpand = e => {
-    e.preventDefault();
+    if (e)
+      e.preventDefault();
     if (this.aboutState === "closed") {
       this.aboutState = "open";
       document.getElementById('visibleAbout').style.transition = "height 1s, box-shadow 0s";
       document.getElementById('visibleAbout').style.boxShadow = "0px 1px 100px 100px rgba(0,0,0,1)";
       document.getElementById('visibleAbout').style.height = "100%";
-      document.getElementById('about').style.color = "white";
+      if (!isMobile)
+        document.getElementById('about').style.color = "white";
     } else {
       this.aboutState = "closed";
       document.getElementById('visibleAbout').style.transition = "height 1s, box-shadow 2s";
       document.getElementById('visibleAbout').style.height = "0";
-      document.getElementById('about').style.color = "gray";
       document.getElementById('visibleAbout').style.boxShadow = "0px 0px 0px 0px rgba(0,0,0,0)";
+      if (!isMobile) 
+        document.getElementById('about').style.color = "gray";
     }
   }
 
@@ -690,17 +735,39 @@ class ProductSearchAutomation extends React.Component {
 
 
   handleDropdownClick = async (e, id) => {
-    document.getElementById(id).style.display = 'none';
-    document.getElementById("res").style.display = 'flex';
-    setTimeout(function () {
-      document.getElementById(id).style.display = 'block';
-    }, 1000);
+    document.getElementById("res").style.display = isMobile ? 'block' : 'flex';
+    if (id) {
+      document.getElementById(id).style.display = 'none';
+      setTimeout(function () {
+        document.getElementById(id).style.display = 'block';
+      }, 1000);
+    }
     await this.handleSearchTerm(e);
     this.analyse();
   }
 
-  showSettings(event) {
-    event.preventDefault();
+  handleStateChange = (state) => {
+    this.setState({ menuOpen: state.isOpen })
+  }
+
+  closeMenu = () => {
+    this.setState({ menuOpen: false })
+  }
+
+  toggleMenu = () => {
+    this.setState(state => ({ menuOpen: !state.menuOpen }))
+  }
+
+  handleFiltersDropdown = () => {
+    if (this.state.filterIsOpen) {
+      document.getElementById("leftResultMainContent").style.height = "0px";
+      document.getElementById("filterDropdownArrow").style.transform = "rotate(180deg)";
+      this.setState({ filterIsOpen: false });
+    } else {
+      document.getElementById("leftResultMainContent").style.height = "100%";
+      document.getElementById("filterDropdownArrow").style.transform = "rotate(0deg)";
+      this.setState({ filterIsOpen: true });
+    }
   }
 
   //Main Method that renders all the HTML
@@ -712,7 +779,7 @@ class ProductSearchAutomation extends React.Component {
 
         <div className="topnav" id="myTopnav">
           <div className="home" id="home" onClick={() => this.reloading()}>PSA</div>
-          <div className="about" id="about" onClick={this.aboutExpand}>About</div>
+          {!isMobile && <div className="about" id="about" onClick={this.aboutExpand}>About</div>}
 
           <div className="App-form" id="App-form">
 
@@ -726,15 +793,15 @@ class ProductSearchAutomation extends React.Component {
             {/*Linking the button to the form*/}
             <button form="textForm" type="submit" className="submitButton" id="submitButton">
               {/*Arrow icon in the button*/}
-              <GoArrowSmallRight className="icon" id="icon" />
+              <IoSearchSharp className="icon" id="icon" />
             </button>
           </div>
         </div>
         <div id="page-wrap" className="page-wrap"></div>
-        {/* {isMobile &&
-          <Sidebar right pageWrapId={"page-wrap"} outerContainerId={"App"} />
-        } */}
-        {true &&
+        {isMobile &&
+          <Sidebar right noOverlay itemListElement="div" handleDropdownClick={this.handleDropdownClick} aboutExpand={this.aboutExpand} isOpen={this.state.menuOpen} onStateChange={(state) => this.handleStateChange(state)} width={'100%'} closeMenu={this.closeMenu} />
+        }
+        {!isMobile &&
           <div className="downNav">
             <Category
               handleDropdownClick = {this.handleDropdownClick}
@@ -787,8 +854,8 @@ class ProductSearchAutomation extends React.Component {
             <div className="top5ContentParent">
               <div id="top5Content" className="row top5Content">
                 <HashLoader
-                  css={override}
-                  size={30}
+                  css={isMobile ? mobileOverride : override}
+                  size={isMobile? 20 : 30}
                   color={'#000000'}
                 />
               </div>
@@ -822,14 +889,15 @@ class ProductSearchAutomation extends React.Component {
 
           <BarLoader
             css={override}
-            size={50}
-            width={300}
+            size={isMobile ? 20 : 50}
+            width={isMobile ? 140 : 300}
             color={'#000000'}
           />
         </div>
 
         <div className="resultModal">
           <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" show={this.state.showResultModal} onHide={() => this.setState({ showResultModal: false })} centered>
+            <div className="modalCloseButtonDiv"><CloseButton className="modalCloseButton" onClick={() => this.setState({ showResultModal: false })}/></div>
             <Modal.Body className="modalBody">
               <section className="modalSection">
                 <div className="modalSmallImages" id="modalSmallImages">
@@ -850,50 +918,59 @@ class ProductSearchAutomation extends React.Component {
         <div className="res" id="res">
 
           <div className="leftResult" id="leftResult">
-            <div className="leftResultMainHead">FILTERS</div>
-            <section className="leftResultSection">
-              <div className="leftResultHead">CATEGORY</div>
-              <div className="leftResultText category" id="category"><IoIosArrowForward className="categoryIcon" /> {this.state.category}</div>
-            </section>
-            <section className="leftResultSection">
-              <div className="leftResultHead">PRICE</div>
-              <div className="sliderDiv" title="Keyboard arrows also work"><input type="text" id="sliderId" /></div>
-            </section>
-            <section className="leftResultSection">
-              <div className="leftResultHead">WEBSITES</div>
-              <div id='websiteCheckboxDiv'></div>
-            </section>
-            <section className="leftResultSection">
-              <div className="leftResultHead">RATING</div>
-              <div className="ratingCheckboxDiv">
-                <div className="custom-control custom-checkbox">
-                  <input type="checkbox" id="rating4" className="ratingCheckbox custom-control-input" onClick={() => this.updateResult()} />
-                  <label title="4 star and above" htmlFor="rating4" className="checkboxLabel custom-control-label">
-                    4&#9733; & above
-                  </label>
+            <div className="leftResultMainHead" onClick={this.handleFiltersDropdown}>FILTERS <IoIosArrowDown id="filterDropdownArrow" className="filterDropdownArrow"/></div>
+            <div id="leftResultMainContent" className="leftResultMainContent">
+              <section className="leftResultSection clearFilterSection">
+                <div className="leftResultClearAll">
+                  <span className="appliedFilterCount">{this.state.appliedFilterCount} FILTERS APPLIED</span>
+                  <button className ="btn clearAllButton" onClick={() => this.clearFilters()}>CLEAR ALL</button>
                 </div>
-                <div className="custom-control custom-checkbox">
-                  <input type="checkbox" id="rating3" className="ratingCheckbox custom-control-input" onClick={() => this.updateResult()} />
-                  <label title="3 star and above" htmlFor="rating3" className="checkboxLabel custom-control-label">
-                    3&#9733; & above
-                  </label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                  <input type="checkbox" id="rating2" className="ratingCheckbox custom-control-input" onClick={() => this.updateResult()} />
-                  <label title="2 star and above" htmlFor="rating2" className="checkboxLabel custom-control-label">
-                    2&#9733; & above
-                  </label>
-                </div>
-                <div className="custom-control custom-checkbox">
-                  <input type="checkbox" id="rating1" className="ratingCheckbox custom-control-input" onClick={() => this.updateResult()} />
-                  <label title="1 star and above" htmlFor="rating1" className="checkboxLabel custom-control-label">
-                    1&#9733; & above
-                  </label>
-                </div>
+              </section>
+              <section className="leftResultSection">
+                <div className="leftResultHead">CATEGORY</div>
+                <div className="leftResultText category" id="category"><IoIosArrowForward className="categoryIcon" /> {this.state.category}</div>
+              </section>
+              <section className="leftResultSection">
+                <div className="leftResultHead">PRICE</div>
+                <div className="sliderDiv" title="Keyboard arrows also work"><input type="text" id="sliderId" /></div>
+              </section>
+              <div className="filterBottomDivToAlign">
+                <section className="leftResultSection">
+                  <div className="leftResultHead">WEBSITES</div>
+                  <div id='websiteCheckboxDiv'></div>
+                </section>
+                <section className="leftResultSection">
+                  <div className="leftResultHead">RATING</div>
+                  <div className="ratingCheckboxDiv">
+                    <div className="custom-control custom-checkbox">
+                      <input type="checkbox" id="rating4" className="ratingCheckbox custom-control-input" />
+                      <label title="4 star and above" htmlFor="rating4" className="checkboxLabel custom-control-label">
+                        4&#9733; & above
+                      </label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                      <input type="checkbox" id="rating3" className="ratingCheckbox custom-control-input" />
+                      <label title="3 star and above" htmlFor="rating3" className="checkboxLabel custom-control-label">
+                        3&#9733; & above
+                      </label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                      <input type="checkbox" id="rating2" className="ratingCheckbox custom-control-input" />
+                      <label title="2 star and above" htmlFor="rating2" className="checkboxLabel custom-control-label">
+                        2&#9733; & above
+                      </label>
+                    </div>
+                    <div className="custom-control custom-checkbox">
+                      <input type="checkbox" id="rating1" className="ratingCheckbox custom-control-input" />
+                      <label title="1 star and above" htmlFor="rating1" className="checkboxLabel custom-control-label">
+                        1&#9733; & above
+                      </label>
+                    </div>
+                  </div>
+                </section>
               </div>
-            </section>
-            <div className="resultCount" id="resultCount">{this.state.resultCount} TOTAL RESULTS</div>
-
+              <div className="resultCount" id="resultCount">{this.state.resultCount} TOTAL RESULTS</div>
+            </div>
           </div>
 
           <div className="result" id="result">
