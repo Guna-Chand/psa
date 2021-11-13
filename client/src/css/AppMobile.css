@@ -1,0 +1,452 @@
+@media screen and (max-width: 700px) {
+    .App {
+        min-width: auto;
+    }
+
+    .downNav-inner2 {
+        max-width: 95%;
+    }
+    .modal-backdrop {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .nameInput{
+        width: 100px;
+    }
+
+    .footer {
+        padding: 5px 30px;
+    }
+
+    .topFiveImg {
+        max-height: 50px;
+        max-width: 50px;
+    }
+
+    .top5Div {
+        font-size: 10px;
+    }
+
+    .topnav {
+        height: 80px;
+    }
+
+    .topnav div.home {
+        letter-spacing: 3px;
+        padding: 10px 0 0 0 !important;
+        font-size: 24px;
+        margin-left: 3px;
+        margin-right: 0px;
+    }
+
+    .topnav div.about {
+        width: 60px;
+        font-size: 15px;
+    }
+
+    .topnav div {
+        padding: 10px;
+        font-size: 10px;
+    }
+
+    .App-form {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        padding-top: 0px !important;
+        width: 100% !important;
+    }
+
+    .textForm {
+        width: 90%;
+    }
+
+    .nameInput {
+        padding: 5px;
+        font-size: 14px;
+        height: 30px;
+        width: 100%;
+    }
+
+    .submitButton {
+        height: 30px;
+        width: 10%;
+    }
+
+    .icon {
+        padding-top: 0px;
+        padding-bottom: 3px;
+        height: 35px;
+        width: 20px;
+    }
+    
+    .carousel-item a img {
+        width: 170% !important;
+        margin-left: -30% !important;
+    }
+
+    .flipkartBanner {
+        padding: 0px 5px;
+        border-radius: 0 0 2px 0;
+    }
+
+    .fromFlipkartImage {
+        height: 10px;
+    }
+
+    .startContent {
+        margin-top: 3px;
+    }
+
+    .staticStartPage, .staticStartPageSteps {
+        margin-top: 2px;
+        height: 200px;
+        padding: 5px;
+    }
+
+    .staticStartPageText, .staticFillerText {
+        padding: 15% 0;
+        padding-left: 4%;
+    }
+
+    .staticStartPageTextTop, .fillerItem {
+        font-size: 23px;
+        font-weight: 600;
+    }
+
+    .staticStartPageTextBottom {
+        font-size: 7px;
+        width: 70%;
+    }
+
+    .top5Div {
+        font-size: 7px;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        min-height: 70px !important;
+        padding-bottom: 0;
+        overflow: hidden;
+    }
+
+    .top5Heading {
+        font-size: 12px;
+        margin-top: 7px;
+    }
+
+    .top5Div hr {
+        margin: 0px;
+    }
+
+    .col-item-inner {
+        padding: 1% 0;
+    }
+
+    .topFiveHeight {
+        height: 80px;
+    }
+
+    .topFiveImgTitle {
+        margin-top: 0px;
+    }
+
+    .top5Content .col-item {
+        height: 100px;
+    }
+
+    .fillerItem {
+        margin-left: 10px;
+    }
+
+    .staticFillerText {
+        height: 90%;
+    }
+
+    .staticPageFiller {
+        background-size: 60%;
+    }
+
+    .staticStartPageSteps {
+        height: 180px;
+    }
+
+    .footerLogo {
+        font-size: 22px;
+    }
+
+    .footerMiddle {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .footerCentered {
+        font-size: 9px;
+    }
+
+    .copyright {
+        font-size: 8px;
+    }
+
+    .feedback {
+        height: 220px;
+    }
+
+    .reportEmail, .reportContent {
+        width: 90%;
+        font-size: 12px;
+    }
+
+    .reportTermsTrigger {
+        font-size: 10px;
+    }
+
+    .reportButton {
+        font-size: 14px;
+    }
+
+    .aboutBackground {
+        margin-top: 120px !important;
+        margin-right: 0px !important;
+        height: 250px !important;
+    }
+
+    .aboutTextHead {
+        font-size: 18px;
+        padding-left: 30px;
+        line-height: 20px;
+    }
+
+    .aboutTextContent {
+        font-size: 9px;
+        padding-left: 30px;
+    }
+
+    .aboutText {
+        background: linear-gradient(to right, rgba(67, 67, 67, 0.3), rgba(0, 0, 0, 0.7));
+    }
+
+    .visibleAbout {
+        background: linear-gradient(to right, #434343, #000000);
+    }
+
+    .aboutTextContentTop {
+        width: 90%;
+        margin-top: 10px;
+    }
+
+    .aboutTextContentTop2 {
+        margin: 10px 0;
+    }
+
+    .aboutCloseButton {
+        margin: 0 auto;
+        margin-top: 50px !important;
+    }
+
+    .aboutTotalVisitsContent {
+        font-size: 13px;
+    }
+
+    .totalPageVisits {
+        font-size: 10px;
+    }
+
+    .aboutTotalVisits {
+        max-width: 150px;
+    }
+
+    .res {
+        min-width: 100px !important;
+        min-height: 100vh !important;
+    }
+
+    .leftResult {
+        max-width: 100%;
+        margin-right: 0px;
+        margin-bottom: 5px;
+    }
+
+    .leftResultMainHead {
+        font-size: 14px;
+        line-height: 2;
+        padding: 10px 15px;
+    }
+
+    .leftResultSection {
+        padding: 10px 15px;
+    }
+
+    .checkboxLabel {
+        font-size: 12px;
+    }
+
+    .filterDropdownArrow {
+        margin-top: 2px;
+        font-size: 24px;
+    }
+
+    .filterBottomDivToAlign section {
+        display: inline-block;
+        vertical-align:top;
+        border-bottom: 0px;
+        width: 50%;
+    }
+    
+    .resultColV2 {
+        max-width: 50% !important;
+        min-width: 50% !important;
+        padding: 0px !important;
+        border: .1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .websiteNameV2 {
+        font-size: 10px !important;
+        padding: 0 5px !important;
+    }
+
+    .elip {
+        font-size: 12px !important;
+        padding: 0 5px !important;
+    }
+
+    .priceV2 {
+        font-size: 14px !important;
+        padding: 0 5px !important;
+    }
+
+    .n-ratingsV2 {
+        padding: 0 5px !important;
+    }
+
+    .contenV2 {
+        font-size: 18px !important;
+        height: 90px !important;
+    }
+
+    .contenV2 .n-ratingsV2 {
+        font-size: 12px !important;
+    }
+
+    .ratingV2 {
+        font-size: 10.5px !important;
+        padding: 2px 4px !important;
+    }
+
+    .goToWebsiteV2Button {
+        height: 30px !important;
+        font-size: 12px !important;
+        margin: 0px !important;
+    }
+
+    .goToWebsiteV2 .btn {
+        padding: 5px 0 !important;
+    }
+
+    .jettext {
+        font-size: 9px !important;
+        margin-top: 30px !important;
+        margin-left: -25px;
+    }
+
+    .imV2 {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        padding: 5px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .modalSection {
+        display: block;
+    }
+
+    .modalSmallImages {
+        flex-flow: row;
+        outline: 0px;
+        border-top: .5px solid black;
+        border-left: .5px solid black;
+        border-right: .5px solid black;
+        border-bottom: 0px;
+    }
+
+    .smallImage {
+        min-height: 70px;
+        max-height: 70px;
+        min-width: 70px;
+        max-width: 70px;
+        outline: 0px;
+        border-right: .5px solid black;
+        border-bottom: 0px;
+    }
+
+    .largeImage {
+        height: 300px;
+        width: 300px;
+    }
+
+    .modalItemContent {
+        padding-bottom: 0px;
+    }
+
+    .modalItemWebsite {
+        font-size: 11px;
+    }
+
+    .modalItemTitle a {
+        font-size: 12px;
+    }
+
+    .modalItemTitle {
+        line-height: 1;
+    }
+
+    .modalItemPrice {
+        font-size: 16px;
+        margin: 3px 0 0 0;
+    }
+
+    .modalItemRatingValue {
+        font-size: 11px !important;
+        padding: 3px 5px;
+    }
+
+    .modalItemRatingCount {
+        font-size: 13px;
+    }
+
+    .largeImageTag {
+        max-width: 300px;
+        max-height: 300px;
+    }
+
+    .modalLargeImages {
+        align-items: center;
+        outline: 0px;
+        border: .5px solid black;
+    }
+
+    .modalItemContentZoomCaution {
+        padding-top: 3px;
+    }
+
+    .no-ads {
+        font-size: 10px;
+        height: 100px !important;
+        padding-top: 43px;
+    }
+
+    .no-ads>.ad-span {
+        width: 50% !important;
+    }
+
+    .timeoutToast {
+        font-size: 12px;
+        top: 83px;
+    }
+
+    .no-results {
+        font-size: 13px;
+    }
+
+    .no-results-2 {
+        font-size: 12px !important;
+    }
+}
