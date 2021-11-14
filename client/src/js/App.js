@@ -6,7 +6,7 @@ import '../css/Sidebar.css';
 import noImg from '../images/noImg.jpg';
 import fromFlipkart from '../images/fromFlipkart.png';
 import { FaTimesCircle } from "react-icons/fa";
-import { IoMdArrowDropupCircle, IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
+import { IoMdArrowDropupCircle, IoIosArrowForward, IoIosArrowUp } from "react-icons/io";
 import { IoSearchSharp } from "react-icons/io5";
 import { isMobile, getUA } from 'react-device-detect';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -873,7 +873,7 @@ class ProductSearchAutomation extends React.Component {
                   </svg>
                 </div>
                 <div className="staticFillerText">
-                  <div className="fillerItem">HAPPY.<br/>SEARCHING.</div>
+                  <div className="fillerItem">HAPPY<br/>SEARCHING.</div>
                 </div>
               </div>
             </div>
@@ -918,7 +918,7 @@ class ProductSearchAutomation extends React.Component {
         <div className="res" id="res">
 
           <div className="leftResult" id="leftResult">
-            <div className="leftResultMainHead" onClick={this.handleFiltersDropdown}>FILTERS <IoIosArrowDown id="filterDropdownArrow" className="filterDropdownArrow"/></div>
+            <div className="leftResultMainHead" onClick={this.handleFiltersDropdown}>FILTERS <IoIosArrowUp id="filterDropdownArrow" className="filterDropdownArrow"/></div>
             <div id="leftResultMainContent" className="leftResultMainContent">
               <section className="leftResultSection clearFilterSection">
                 <div className="leftResultClearAll">

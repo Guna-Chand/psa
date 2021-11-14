@@ -149,6 +149,7 @@ body::-webkit-scrollbar-thumb {
     bottom: 0;
     left: 0;
     width: 100%;
+    max-height: 55%;
     overflow: hidden;
     line-height: 0;
 }
@@ -165,7 +166,6 @@ body::-webkit-scrollbar-thumb {
   height: 100%;
   background-image: url("../images/addImg2.png");
   background-repeat: no-repeat;
-  background-size: 45%;
   background-position: right;
 }
 
@@ -1458,7 +1458,7 @@ h4 {
   width: 100%;
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
-  border-bottom: 7px solid coral;
+  border-bottom: 7px solid rgba(128, 0, 0, 0.7);
   visibility: hidden;
   top: 45px;
   opacity: 0;
@@ -1492,7 +1492,7 @@ h4 {
 .dropItemHead {
   font-weight: 600;
   font-size: 14px;
-  color: orangered;
+  color: maroon;
   padding: 8px 0 8px 23px !important;
   border: 1px solid transparent;
   position: relative;
