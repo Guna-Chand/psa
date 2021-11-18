@@ -41,13 +41,13 @@ const fetchMyntra = (searchTerm, page, isMyntraSearchable) => {
                     const options = {
                         timeout: 1000 * 30,
                         "headers": {
-                            "accept": "application/json",
+                            "accept": "*/*",
                             "accept-language": "en-GB,en;q=0.9",
                             "content-type": "application/json",
                             "x-meta-app": "channel=web",
                             "x-myntraweb": "Yes",
                             "x-requested-with": "browser",
-                            "Access-Control-Request-Headers": "accept, accept-language, content-type, x-meta-app, x-myntraweb, x-requested-with"
+                            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 FKUA/website/42/website/Desktop"
                         }
                     };
                     let httpRes = await axios.get(AppConstants.MYNTRA_URL(searchTerm, page), options);
