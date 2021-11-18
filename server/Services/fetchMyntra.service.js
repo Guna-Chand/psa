@@ -46,7 +46,8 @@ const fetchMyntra = (searchTerm, page, isMyntraSearchable) => {
                             "content-type": "application/json",
                             "x-meta-app": "channel=web",
                             "x-myntraweb": "Yes",
-                            "x-requested-with": "browser"
+                            "x-requested-with": "browser",
+                            "Access-Control-Request-Headers": "accept, accept-language, content-type, x-meta-app, x-myntraweb, x-requested-with"
                         }
                     };
                     let httpRes = await axios.get(AppConstants.MYNTRA_URL(searchTerm, page), options);
