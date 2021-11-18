@@ -33,7 +33,6 @@ const mobileOverride = css`
 
 var data = [];
 var fixedData = [];
-var expandedData = [];
 var globalCurrentSearchTermFlag = '';
 var globalCurrentSearchTermStable = '';
 //globalPriceUpdateFlag is to keep track if the price slider is moved or not just not to do unneccessary price sorting
@@ -151,7 +150,7 @@ class ProductSearchAutomation extends React.Component {
       this.updateResult();
     });
 
-    axios.post('/getVisitCount')
+    axios.post('/homepage/getVisitCount')
       .then(res => {
         if (res.data !== 'Retrieving...') {
           document.getElementById('totalPageVisits').innerHTML = res.data[0].totalVisits;
@@ -162,14 +161,14 @@ class ProductSearchAutomation extends React.Component {
         console.error(err);
       });
 
-    axios.post('/getFirstPage')
+    axios.post('/homepage/getCarousal')
       .then(res => {
         this.fetchStartPageContent(res.data);
       }).catch(err => {
         console.error(err);
       });
 
-    axios.post('/initialFireup')
+    axios.post('/homepage/initialFireup')
       .then(res => {
         globalTopFive = res.data[0];
         this.setSearchSuggestions(globalTopFive);
@@ -192,7 +191,7 @@ class ProductSearchAutomation extends React.Component {
       if (this.state.searchTerm === '') {
         this.setSearchSuggestions(globalTopFive);
       } else {
-        axios.post('/searchTermSuggestions', { searchTerm: this.state.searchTerm.toLowerCase() })
+        axios.post('/homepage/searchTermSuggestions', { searchTerm: this.state.searchTerm.toLowerCase() })
           .then(res => {
             this.setSearchSuggestions(res.data);
           }).catch(err => {
@@ -240,15 +239,17 @@ class ProductSearchAutomation extends React.Component {
     document.getElementById('top5Content').innerHTML = '';
 
     imgSrc.forEach((src, i) => {
-      topFiveAdder = `
-                    <div class = "col col-item">
-                      <div class = "col-item-inner">
-                        <div class = "topFiveHeight"><span class="largeImagehelper"></span><img src = ${src || noImg} alt = '' class = "topFiveImg"/></div>
-                        <div class = "topFiveImgTitle">${dataLocal[i].searchTerm}</div>
+      if (src !== null && src !== undefined && src !== "" && src.includes("https://")){
+        topFiveAdder = `
+                      <div class = "col col-item">
+                        <div class = "col-item-inner">
+                          <div class = "topFiveHeight"><span class="largeImagehelper"></span><img src = ${src || noImg} alt = '' class = "topFiveImg"/></div>
+                          <div class = "topFiveImgTitle">${dataLocal[i].searchTerm}</div>
+                        </div>
                       </div>
-                    </div>
-                    `;
-      document.getElementById('top5Content').innerHTML += topFiveAdder;
+                      `;
+        document.getElementById('top5Content').innerHTML += topFiveAdder;
+      }
     });
 
     $(".col-item-inner").map((index, ele) => {
@@ -321,7 +322,7 @@ class ProductSearchAutomation extends React.Component {
 
   updateResultByRating(ratingLocal) {
     let temp = data.filter(ele => {
-      let rating = parseFloat(ele.rating);
+      let rating = ele.rating;
       if (rating >= ratingLocal) {
         return true;
       }
@@ -332,7 +333,7 @@ class ProductSearchAutomation extends React.Component {
 
   updateResultByPrice(priceMin, priceMax) {
     let temp = fixedData.filter(ele => {
-      let price = parseInt(ele.price.replace(/,/g, ''));
+      let price = ele.price;
       if (price >= priceMin && price <= priceMax) {
         return true;
       }
@@ -374,34 +375,6 @@ class ProductSearchAutomation extends React.Component {
     });
   }
 
-
-  rank() {
-    data.sort(function (a, b) {
-      return b.rating - a.rating;
-    });
-
-    let count = 0
-
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].rating >= 3.0) {
-        count++;
-      }
-    }
-    var data1 = data.slice(0, count);
-
-    if (data1.length > 1) {
-      data1.sort(function (a, b) {
-        return b.ratingCount - a.ratingCount;
-      });
-    }
-
-    var data2 = data.slice(count,);
-    if (data2.length > 0) {
-      data1.push(...data2);
-    }
-    data = data1;
-  }
-
   timeoutMsgTrigger = e => {
     this.setState({
       timeoutMsg: e
@@ -422,69 +395,41 @@ class ProductSearchAutomation extends React.Component {
   resultBlockClick = e => {
     let idLocal = e;
     let smallImagesAdder = ``;
-    // zoomCautionFlag = false;
     if (idLocal.includes('secondary')) {
       idLocal = idLocal.replace('secondary', '');
     }
-    let obj = expandedData.find(o => o.id === idLocal);
-    if (obj === undefined) {
-      obj = data.find(o => o.id === idLocal);
+    let obj = data.find(o => o.id === idLocal);
+    let largeImagesAdder = `<div class = "largeImage"><span class="largeImagehelper"></span><img class = "largeImageTag" src = ${obj.images[0] || noImg} alt = "NULL"/></div>`;
+    obj.images.forEach((item, i) => {
+      smallImagesAdder += `
+      <div class = "smallImage"><span class="largeImagehelper"></span><img src = ${item || noImg} alt = "NULL"/></div>
+      `;
+    });
+    let itemContentAdder = `<div class = "itemContent">
+                              <div class = "modalItemWebsite">${obj.website}</div>
+                              <div class = "modalItemTitle"><a href = ${obj.link} target = "_blank">${obj.name}</a></div>
+                              <div class = "modalItemPrice">&#8377; ${(obj.price).toLocaleString()}</div>
+                              <div class = "modalItemRating"><span class = "modalItemRatingValue">${obj.rating}&#9733;</span> <span class = "modalItemRatingCount">(${(obj.ratingCount).toLocaleString()} ratings)</span></div>
+                            </div>`;
 
-      let largeImagesAdder = `<div class = "largeImage"><span class="largeImagehelper"></span><img src = ${obj.imageSrc || noImg} class = "largeImageTag" alt = "NULL"/></div>`;
-      smallImagesAdder = `<div class = "smallImage"><span class="largeImagehelper"></span><img src = ${obj.imageSrc || noImg} alt = "NULL"/></div>`;
-      let itemContentAdder = `<div class = "itemContent">
-                                <div class = "modalItemWebsite">${obj.website}</div>
-                                <div class = "modalItemTitle"><a href = ${obj.link} target = "_blank">${obj.name}</a></div>
-                                <div class = "modalItemPrice">&#8377; ${obj.price}</div>
-                                <div class = "modalItemRating"><span class = "modalItemRatingValue">${obj.rating}&#9733;</span> <span class = "modalItemRatingCount">(${(obj.ratingCount).toLocaleString()} ratings)</span></div>
-                              </div>`;
-
-      this.setState({ showResultModal: true }, () => {
-        document.getElementById('modalSmallImages').innerHTML = smallImagesAdder;
-        document.getElementById('modalLargeImages').innerHTML = largeImagesAdder;
-        document.getElementById('modalItemContent').innerHTML = itemContentAdder;
-        window.$('.largeImage').zoom({ on: 'click' });
-        // $('.largeImage').bind('click touchstart', () => {
-        //   if (zoomCautionFlag === false) {
-        //     zoomCautionFlag = true;
-        //     document.getElementById('modalItemContent').innerHTML += `<div class = "modalItemContentZoomCaution">Amazon and SnapDeal images fetched are currently not fit for zooming.<br/><b>Will be updated soon.</b></div>`;
-        //   }
-        // });
-      });
-    } else {
-      let largeImagesAdder = `<div class = "largeImage"><span class="largeImagehelper"></span><img class = "largeImageTag" src = ${obj.imageSrc.replace(/\/416/g, '/1664') || noImg} alt = "NULL"/></div>`;
-      obj.images.forEach((item, i) => {
-        smallImagesAdder += `
-        <div class = "smallImage"><span class="largeImagehelper"></span><img src = ${item || noImg} alt = "NULL"/></div>
-        `;
-      });
-      let itemContentAdder = `<div class = "itemContent">
-                                <div class = "modalItemWebsite">${obj.website}</div>
-                                <div class = "modalItemTitle"><a href = ${obj.link} target = "_blank">${obj.name}</a></div>
-                                <div class = "modalItemPrice">&#8377; ${obj.price}</div>
-                                <div class = "modalItemRating"><span class = "modalItemRatingValue">${obj.rating}&#9733;</span> <span class = "modalItemRatingCount">(${(obj.ratingCount).toLocaleString()} ratings)</span></div>
-                              </div>`;
-
-      this.setState({ showResultModal: true }, () => {
-        document.getElementById('modalSmallImages').innerHTML = smallImagesAdder;
-        document.getElementById('modalLargeImages').innerHTML = largeImagesAdder;
-        document.getElementById('modalItemContent').innerHTML = itemContentAdder;
-        window.$('.largeImage').zoom({ on: 'click' });
-        $(".smallImage").map((index, ele) => {
-          $(ele).bind("mouseenter", () => {
-            this.modalImageChange(obj.images[index].replace(/\/128/g, '/1664'));
-          });
-          return 1;
+    this.setState({ showResultModal: true }, () => {
+      document.getElementById('modalSmallImages').innerHTML = smallImagesAdder;
+      document.getElementById('modalLargeImages').innerHTML = largeImagesAdder;
+      document.getElementById('modalItemContent').innerHTML = itemContentAdder;
+      window.$('.largeImage').zoom({ on: 'click' });
+      $(".smallImage").map((index, ele) => {
+        $(ele).bind("mouseenter", () => {
+          this.modalImageChange(obj.images[index]);
         });
+        return 1;
       });
-    }
+    });
   };
 
   resultInterfaceUpdate() {
     var resultAdder = ``;
     if (data.length !== 0) {
 
-      this.rank();
       let divider = isMobile ? 2 : 4;
 
       data.forEach((log, index) => {
@@ -503,7 +448,7 @@ class ProductSearchAutomation extends React.Component {
                               <div class = "contenV2" name = ${index}>
                                   <div class = "websiteNameV2" name = ${index}>${log.website}</div>
                                   <div title = "${log.title}" name = ${index} class = "elip resultTitle" id = "${log.id}secondary">${log.name}</div>
-                                  <span class = "priceV2" name = ${index}>&#8377; ${log.price}</span>
+                                  <span class = "priceV2" name = ${index}>&#8377; ${(log.price).toLocaleString()}</span>
                                   <p class = "n-ratingsV2" name = ${index}><b class = "ratingV2" name = ${index}>${log.rating}&#9733;</b> (${(log.ratingCount).toLocaleString()} Ratings)</p>
                                   <div class = "goToWebsiteV2" name = ${index}><a href = ${log.link} name = ${index} title = "Open this product in ${log.website}" target = "_blank" class="btn btn-secondary goToWebsiteV2Button">Open in ${log.website}</a></div>
                               </div>
@@ -590,17 +535,16 @@ class ProductSearchAutomation extends React.Component {
         });
 
         window.scroll({ top: 0, left: 0, behavior: 'smooth' });
-        axios.post('/getSearchResults', { searchTerm: searchTerm })
+        axios.post('/search/getSearchResults', { searchTerm: searchTerm })
           .then(res => {
 
             data = res.data[0];
-            expandedData = res.data[1];
-            this.setState({ category: res.data[2] });
+            this.setState({ category: res.data[1] });
             fixedData = data;
 
             this.displayWebsiteCheckbox(data);
 
-            let max = Math.max.apply(Math, data.map(function (ele) { return parseInt(ele.price.replace(/,/g, '')); }));
+            let max = Math.max.apply(Math, data.map(function (ele) { return ele.price }));
 
             window.$("#sliderId").data("ionRangeSlider").update({
               from: 0,
@@ -621,10 +565,9 @@ class ProductSearchAutomation extends React.Component {
             this.setState({ timeCounter: 0 });
           }).catch(err => {
             console.error(err);
-            this.timeoutMsgTrigger('NETWORK ERROR ! Retrieval failed, Please try again.');
+            this.timeoutMsgTrigger('Request failed, Please try again.');
             data = [];
-            expandedData = [];
-            this.setState({ category: 'Not Detected' });
+            this.setState({ category: 'Unable To Detected' });
             fixedData = data;
             this.displayWebsiteCheckbox(data);
             try {
@@ -693,7 +636,7 @@ class ProductSearchAutomation extends React.Component {
       alert('Description must not be empty !');
     } else {
 
-      axios.post('/sendReport', { fromName: this.state.reportEmail, messageHtml: this.state.reportContent, userAgent: getUA })
+      axios.post('/report/sendReport', { fromName: this.state.reportEmail, messageHtml: this.state.reportContent, userAgent: getUA })
         .then(res => {
           if (res.data === "success") {
             this.timeoutMsgTrigger('Reported Succesfully');
@@ -884,9 +827,7 @@ class ProductSearchAutomation extends React.Component {
         <div className="timeoutToast" id="timeoutToast" title="Tap to close" onClick={() => document.getElementById('timeoutToast').style.display = "none"}>{this.state.timeoutMsg}<span className="timeoutToastx"><FaTimesCircle className="timeoutIcon" /></span></div>
 
         <div id="head" className="head">
-
-          <h1 className='jettext' title="Applies only for good internet connection">This will take some time (Approx 15 sec).  <u className="timeCounter">{this.state.timeCounter}sec</u></h1>
-
+          {/* <h1 className='jettext' title="Applies only for good internet connection">This will take some time (Approx 15 sec).  <u className="timeCounter">{this.state.timeCounter}sec</u></h1> */}
           <BarLoader
             css={override}
             size={isMobile ? 20 : 50}

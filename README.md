@@ -8,5 +8,5 @@ MULTI-SOURCE REAL-TIME PRODUCT RANKING
 - Uses [MongoDB](https://www.mongodb.com/)
 
 ## Local usage details:
-- Replace `"start": "node server.js"` in *package.json* to `"start" : "concurrently \"npm run server\" \"npm run client\""` to run both server and client locally in one go.
-- Do the vice versa or simply discard changes when pushing the changes to GIT.
+- Replace `"start": "npm run server"` in *package.json* to `"start" : "concurrently \"npm run server\" \"npm run client\""` and do `npm start` to run both server and client locally in one go. **(OR)** Simply do `npm run start-local`.
+- Do the vice versa or simply discard changes if any, when pushing them to GIT.

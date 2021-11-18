@@ -161,7 +161,7 @@ class Category extends React.Component {
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Single Door Refrigerator', 'dropOut2')}><div>Single Door</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Double Door Refrigerator', 'dropOut2')}><div>Double Door</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Triple Door Refrigerator', 'dropOut2')}><div>Triple Door</div></div>
-                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Sde by side Refrigerator', 'dropOut2')}><div>Side By Side</div></div>
+                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Side by side Refrigerator', 'dropOut2')}><div>Side By Side</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Convertible Refrigerator', 'dropOut2')}><div>Convertible</div></div>
                                         <div className="dropItemHead"><div>Shop By Brand</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Samsung Fridge', 'dropOut2')}><div>Samsung</div></div>
@@ -202,7 +202,7 @@ class Category extends React.Component {
                                 <div className="dropIn drop2In">
                                     <div className="dropInBatch">
                                         <div className="dropItemHead" onClick={() => this.handleDropdownClick('Men Clothing', 'dropOut3')}><div>Clothing</div></div>
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Men top wear', 'dropOut3')}><div>Top Wear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Top wear for men', 'dropOut3')}><div>Top Wear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('T Shirts for men', 'dropOut3')}><div>T-Shirts</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Shirts for men', 'dropOut3')}><div>Shirts</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Kurtas for men', 'dropOut3')}><div>Kurtas</div></div>
@@ -218,7 +218,7 @@ class Category extends React.Component {
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Track pants for men', 'dropOut3')}><div>Track pants</div></div>
                                     </div>
                                     <div className="dropInBatch dropInColorDark">
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Men seasonal wear', 'dropOut3')}><div>Seasonal Wear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Seasonal wear for men', 'dropOut3')}><div>Seasonal Wear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Sweaters for men', 'dropOut3')}><div>Sweaters</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Jackets for men', 'dropOut3')}><div>Jackets</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Sweatshirts for men', 'dropOut3')}><div>Sweatshirts</div></div>
@@ -228,13 +228,13 @@ class Category extends React.Component {
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Sports t shirts for men', 'dropOut3')}><div>Sports T-Shirts</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Track pants for men', 'dropOut3')}><div>Track Pants</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Track suits for men', 'dropOut3')}><div>Track Suits</div></div>
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Mens innerwear', 'dropOut3')}><div>Innerwear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Innerwear for men', 'dropOut3')}><div>Innerwear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Briefs for men', 'dropOut3')}><div>Briefs</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Vests for men', 'dropOut3')}><div>Vests</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Boxers', 'dropOut3')}><div>Boxers</div></div>
                                     </div>
                                     <div className="dropInBatch">
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Men footwear', 'dropOut3')}><div>Footwear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Footwear for men', 'dropOut3')}><div>Footwear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Sports shoes for men', 'dropOut3')}><div>Sports Shoes</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Casual shoes for men', 'dropOut3')}><div>Casual Shoes</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Formal shoes for men', 'dropOut3')}><div>Formal Shoes</div></div>
@@ -303,30 +303,30 @@ class Category extends React.Component {
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Jeggings', 'dropOut4')}><div>Jeggings</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Trousers for women', 'dropOut4')}><div>Trousers</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Capris', 'dropOut4')}><div>Capris</div></div>
-                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Women Sleepwear', 'dropOut4')}><div>Sleepwear</div></div>
+                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Sleepwear for women', 'dropOut4')}><div>Sleepwear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Bras', 'dropOut4')}><div>Bras</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Nighties', 'dropOut4')}><div>Nighties</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Slips for women', 'dropOut4')}><div>Slips</div></div>
                                     </div>
                                     <div className="dropInBatch dropInColorDark">
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Women ethnic wear', 'dropOut4')}><div>Ethnic Wear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Ethnic wear for women', 'dropOut4')}><div>Ethnic Wear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Sarees', 'dropOut4')}><div>Sarees</div></div>
-                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Women Kutas', 'dropOut4')}><div>Kurtas</div></div>
+                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Kurtas for women', 'dropOut4')}><div>Kurtas</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Lehenga Choli', 'dropOut4')}><div>Lehenga Choli</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Blouse', 'dropOut4')}><div>Blouse</div></div>
-                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Women Ethnic Bottom', 'dropOut4')}><div>Ethnic Bottoms</div></div>
+                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Ethnic Bottom for women', 'dropOut4')}><div>Ethnic Bottoms</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Anarkali Suits', 'dropOut4')}><div>Anarkali Suits</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Petticoats', 'dropOut4')}><div>Petticoats</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Dupattas', 'dropOut4')}><div>Dupattas</div></div>
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Women Seasonal Wear', 'dropOut4')}><div>Seasonal Wear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Seasonal Wear for women', 'dropOut4')}><div>Seasonal Wear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Sweaters for women', 'dropOut4')}><div>Sweaters</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Seatshirts for women', 'dropOut4')}><div>Sweatshirts</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Jackets for women', 'dropOut4')}><div>Jackets</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Rain coats for women', 'dropOut4')}><div>Rain Coats</div></div>
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Women sports wear', 'dropOut4')}><div>Sports Wear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Sports wear for women', 'dropOut4')}><div>Sports Wear</div></div>
                                     </div>
                                     <div className="dropInBatch">
-                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Women Footwear', 'dropOut4')}><div>Footwear</div></div>
+                                        <div className="dropItemHead" onClick={() => this.handleDropdownClick('Footwear for women', 'dropOut4')}><div>Footwear</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Sandals for women', 'dropOut4')}><div>Sandals</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Flats', 'dropOut4')}><div>Flats</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Heels', 'dropOut4')}><div>Heels</div></div>
@@ -335,7 +335,7 @@ class Category extends React.Component {
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Flip flops for women', 'dropOut4')}><div>Flip-Flops</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Ballerinas', 'dropOut4')}><div>Ballerinas</div></div>
                                         <div className="dropItemHead" onClick={() => this.handleDropdownClick('Shoes for women', 'dropOut4')}><div>Shoes</div></div>
-                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Women sport shoes', 'dropOut4')}><div>Sports Shoes</div></div>
+                                        <div className="dropItem" onClick={() => this.handleDropdownClick('Sport shoes for women', 'dropOut4')}><div>Sports Shoes</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Casual shoes for women', 'dropOut4')}><div>Casual Shoes</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Ethnic shoes for women', 'dropOut4')}><div>Ethnic Shoes</div></div>
                                         <div className="dropItem" onClick={() => this.handleDropdownClick('Party shoes for women', 'dropOut4')}><div>Party Shoes</div></div>
