@@ -1,16 +1,16 @@
 {
   "name": "psa",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "type": "module",
+  "description": "PRODUCT SEARCH AUTOMATION",
+  "main": "server/index.js",
   "scripts": {
-    "server": "node server.js",
+    "server": "node server/index.js",
     "client": "npm start --prefix client",
-    "start": "node server.js",
+    "start": "npm run server",
+    "start-local": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "author": "",
+  "author": "Guna Chand Dakavarapu",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.4",
