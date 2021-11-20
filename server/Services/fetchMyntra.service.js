@@ -51,10 +51,7 @@ const fetchMyntra = (searchTerm, page, isMyntraSearchable) => {
                             "x-meta-app": "channel=web",
                             "x-myntraweb": "Yes",
                             "x-requested-with": "browser",
-                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
-                            "cookie": "akaas_myntra_SegmentationLabel=1639902590~rv=2~id=4147cbfe1713f26be9e3e53c8b46fcf1~rn=PWA; _abck=4DDEC1A5187E10D37D862B32E6CDEA29~-1~YAAQnlM2F72gQTB9AQAAsO1QNwabhjKenVmKADVNIDfjXW3y2+jmNjRw6rW676E4Xjp0jYiQKwMjWztXhgjzYjmOn3Vi/VfWedLAiMAssWtd/WvPg1qXRXyAFDKxzgN1V1MlXvWQ+nb6zOcl/s+fYRKM8W+d8PpoUBMWyEBcG1hMWleA3o5cii5DJYgZVkqy5A48ll5+Q1qXpKSSW5NWqQw7UM6polQ6tUnp52p8SZEYRvdj4mQPGPIeu46IW+2lzDEoMnsfq1FLqOFuMTrfNBnBTj30DFyh9mqHj9XzitXQBIDfzyeuDrh54g1OmRhr027BLPhTbtK4AqjZ7epBFnMU1gusFJrtlWyKGO7f6nE=~-1~-1~-1",
-                            "Referer": "https://www.myntra.com/",
-                            "Referrer-Policy": "strict-origin-when-cross-origin"
+                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
                         }
                     };
                     let httpRes = await axios.get(AppConstants.MYNTRA_URL(searchTerm, page), options);
