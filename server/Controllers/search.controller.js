@@ -33,8 +33,8 @@ const getSearchResults = async (req, res) => {
 
     Promise.allSettled([
         fetchFlipkart(searchTerm, 1),
-        fetchAmazon(searchTerm, 1),
-        fetchMyntra(searchTerm, 1, isMyntraSearchable)
+        fetchAmazon(searchTerm, 1)
+        // fetchMyntra(searchTerm, 1, isMyntraSearchable)
     ]).then(results => {
         results.forEach((result, index) => {
             try {

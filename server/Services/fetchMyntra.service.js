@@ -44,9 +44,14 @@ const fetchMyntra = (searchTerm, page, isMyntraSearchable) => {
                             "accept": "application/json",
                             "accept-language": "en-GB,en;q=0.9",
                             "content-type": "application/json",
+                            "sec-fetch-dest": "empty",
+                            "sec-fetch-mode": "cors",
+                            "sec-fetch-site": "same-origin",
+                            "sec-gpc": "1",
                             "x-meta-app": "channel=web",
                             "x-myntraweb": "Yes",
-                            "x-requested-with": "browser"
+                            "x-requested-with": "browser",
+                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
                         }
                     };
                     let httpRes = await axios.get(AppConstants.MYNTRA_URL(searchTerm, page), options);
