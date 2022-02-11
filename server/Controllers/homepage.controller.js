@@ -5,6 +5,11 @@ const getImage = require("../Services/getImage.service");
 
 const topFive = async (req, res) => {
     let date = new Date();
+    Visit.updateOne(
+        { inde: 1 },
+        { $inc: { totalVisits: 1 }, $set: { lastVisit: date } },
+        { upsert: true }
+    );
 
     SearchTerms.find({}).sort({ frequency: -1 }).limit(5).then((resu) => {
         let imgSrc = [];
@@ -31,15 +36,6 @@ const topFive = async (req, res) => {
         res.send([]);
         console.log(err);
     });
-
-    Visit.updateOne(
-        { inde: 1 },
-        {
-            $inc: { totalVisits: 1 },
-            $set: { lastVisit: date }
-        },
-        { upsert: true }
-    );
 };
 
 const searchSuggestions = (req, res) => {
