@@ -9,7 +9,11 @@ const topFive = async (req, res) => {
         { inde: 1 },
         { $inc: { totalVisits: 1 }, $set: { lastVisit: date } },
         { upsert: true }
-    );
+    )
+    .then((ress) => { })
+    .catch((err) => {
+      console.log(err);
+    });
 
     SearchTerms.find({}).sort({ frequency: -1 }).limit(5).then((resu) => {
         let imgSrc = [];
