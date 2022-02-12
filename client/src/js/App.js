@@ -952,7 +952,7 @@ class ProductSearchAutomation extends React.Component {
             </form>
 
           </div>
-          <div className="copyright" id="copyright"><span className="footerYear">&copy; 2021</span>, PRODUCT SEARCH AUTOMATION</div>
+          <div className="copyright" id="copyright"><span className="footerYear">&copy; 2022</span>, PRODUCT SEARCH AUTOMATION</div>
         </footer>
 
       </div>
